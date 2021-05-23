@@ -33,5 +33,7 @@
  }
 
  .visibility-eye{
-    margin-left: 4px;
- }
+   border-radius: 0px;
+   border: 1px solid black;
+   margin-left: 4px;
+}
