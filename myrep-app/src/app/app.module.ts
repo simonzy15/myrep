@@ -13,6 +13,8 @@ import { MatFormFieldModule }  from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
+import { ShowHidePasswordModule } from 'ngx-show-hide-password';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   imports: [
     BrowserModule,
+    ShowHidePasswordModule,
     AppRoutingModule,
     
     FormsModule,
