@@ -1,1 +1,25 @@
-<h1>SignUp Page</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+*{font-family: "Raleway", sans-serif}
+</style>
+<div>
+    <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+        <label class="signup">
+            Username:
+            <input type = "text" formControlName="userName">
+        </label>
+        <br>
+        <label class="signup">
+            Password:
+            <input type="text" formControlName="password">
+        </label>
+        <br>
+        <label class="signup">
+            Email:
+            <input type="text" formControlName="email">
+        </label>
+        <br>
+        <button id="submit-button" type="submit">Register</button>
+    </form>
+</div>
