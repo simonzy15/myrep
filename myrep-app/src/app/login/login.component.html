@@ -13,9 +13,11 @@
         <br>
         <label class="login">
             Password:
-            <input type="text" formControlName="password">
+                <input id="password1" type="password" formControlName="password" showHideInput>
         </label>
-        <i class="far fa-eye"></i>
+                <button class="visibility-eye" type="button" showHideTrigger="password1">
+                    <i class="fas fa-eye"></i>
+                </button>
         <br>
         <button id="submit-button" type="submit">Login</button>
     </form>
