@@ -1,1 +1,20 @@
-<h1>Login Page</h1>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+*{font-family: "Raleway", sans-serif}
+</style>
+<div>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <label class="login">
+            Username:
+            <input type = "text" formControlName="userName">
+        </label>
+        <br>
+        <label class="login">
+            Password:
+            <input type="text" formControlName="password">
+        </label>
+        <br>
+        <button id="submit-button" type="submit">Login</button>
+    </form>
+</div>

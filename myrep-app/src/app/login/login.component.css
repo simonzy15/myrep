@@ -1,0 +1,33 @@
+.login{
+    background-color:#000;
+    color:#fff;
+    display:inline-block;
+    padding-left:8px;
+    padding-right:8px;
+    text-align:center;
+    text-decoration: none;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.login-form {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+ }
+
+ #submit-button {
+    background-color:#000;
+    color:#fff;
+    display:inline-block;
+    padding-left:8px;
+    padding-right:8px;
+    text-align:center;
+    text-decoration: none;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+ }
