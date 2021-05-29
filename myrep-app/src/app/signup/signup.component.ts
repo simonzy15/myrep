@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -8,10 +9,12 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
-  
+  public path: string;
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) {
+    this.path = 'placeholder';
 
   }
 
@@ -27,6 +30,9 @@ export class SignupComponent implements OnInit {
     })
   }
   onSubmit(): void{
-    console.log(this.signupForm);
+    console.log(this.signupForm.value);
+    this.http.post(this.path, this.signupForm.value).subscribe((result) =>{
+        console.warn("Result: ", result)
+    })
   }
 }
