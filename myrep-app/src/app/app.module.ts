@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
     BrowserModule,
     ShowHidePasswordModule,
     AppRoutingModule,
+    HttpClientModule,
     
     FormsModule,
     ReactiveFormsModule,

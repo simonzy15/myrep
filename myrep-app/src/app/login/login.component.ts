@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -8,11 +9,13 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  public path: string;
   
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) {
-
+    this.path = 'placeholder';
   }
 
   ngOnInit(): void {
@@ -27,5 +30,9 @@ export class LoginComponent implements OnInit {
   }
   onSubmit(): void{
     console.log(this.loginForm);
+    console.log(this.loginForm.value);
+    this.http.post(this.path, this.loginForm.value).subscribe((result) =>{
+        console.warn("Result: ", result)
+    })
   }
 }
