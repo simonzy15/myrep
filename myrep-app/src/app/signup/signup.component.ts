@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +14,7 @@ export class SignupComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient
   ) {
-    this.path = 'placeholder';
+    this.path = 'http://localhost:8001/api/register';
 
   }
 
@@ -24,14 +24,24 @@ export class SignupComponent implements OnInit {
 
   private initForm(): void {
     this.signupForm = this.fb.group({
-      userName: '',
-      password: '',
-      email: ''
+      Username: '',
+      Password: '',
+      Email: ''
     })
   }
   onSubmit(): void{
     console.log(this.signupForm.value);
-    this.http.post(this.path, this.signupForm.value).subscribe((result) =>{
+    
+    const httpHeader = new HttpHeaders({
+      'content-type' : 'application/x-www-form-urlencoded'
+    })
+    this.http.post(
+      this.path, 
+      this.signupForm.value,
+      {
+        headers: httpHeader
+      }
+      ).subscribe((result) =>{
         console.warn("Result: ", result)
     })
   }
