@@ -24,7 +24,10 @@ type User struct {
 var users []User
 
 func createUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	var user User
 	_ = json.NewDecoder(r.Body).Decode(&user)
 	user.ID = strconv.Itoa(rand.Intn(100000000))
@@ -33,6 +36,8 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	json.NewEncoder(w).Encode(users)
@@ -42,7 +47,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	json.NewEncoder(w).Encode("no item found")
+	json.NewEncoder(w).Encode(users)
 }
 
 func main() {
