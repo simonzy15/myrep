@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { HttpClientModule } from '@angular/common/http';
 
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +36,14 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+
+    // Import the module into the application, with configuration
+    AuthModule.forRoot({
+      domain: 'dev-8z3b7ajm.us.auth0.com',
+      clientId: 'zwhMLIbxzfTWildS0YG0iTGQXXTYEJxj'
+    })
+
   ],
   providers: [],
   bootstrap: [AppComponent]
