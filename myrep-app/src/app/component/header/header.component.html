@@ -9,7 +9,6 @@
         <div *ngIf = "(auth.isAuthenticated$ | async) === false; then internal else external"></div>
         <ng-template #internal>
             <app-login class = "button"></app-login>
-            <app-signup class = "button"></app-signup>
         </ng-template>
         <ng-template #external>
             <app-logout class = "button"></app-logout>
