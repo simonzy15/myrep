@@ -18,13 +18,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
+import { environment as env } from '../environments/environment';
+import { LogoutComponent } from './logout/logout.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SignupComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -40,8 +44,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 
     // Import the module into the application, with configuration
     AuthModule.forRoot({
-      domain: 'dev-8z3b7ajm.us.auth0.com',
-      clientId: 'zwhMLIbxzfTWildS0YG0iTGQXXTYEJxj'
+      ... env.auth,
     })
 
   ],

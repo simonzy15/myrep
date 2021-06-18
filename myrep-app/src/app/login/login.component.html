@@ -1,24 +1,5 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <style>
 *{font-family: "Raleway", sans-serif}
 </style>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
-<div>
-    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <label class="login">
-            Username:
-            <input type = "text" formControlName="Username">
-        </label>
-        <br>
-        <label class="login">
-            Password:
-                <input id="password1" type="password" formControlName="Password" showHideInput>
-        </label>
-                <button class="visibility-eye" type="button" showHideTrigger="password1">
-                    <i class="fas fa-eye"></i>
-                </button>
-        <br>
-        <button id="submit-button" type="submit">Login</button>
-    </form>
-</div>
+<button (click)="loginWithRedirect()">Login</button>
