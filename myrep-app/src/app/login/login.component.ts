@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   public login(): void {
     this.auth.loginWithRedirect({ 
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin,
     });
   }
 }
