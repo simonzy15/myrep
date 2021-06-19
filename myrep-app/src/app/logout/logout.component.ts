@@ -18,6 +18,6 @@ export class LogoutComponent implements OnInit {
   }
 
   public logout(): void {
-    this.auth.logout({ returnTo: this.doc.location.origin })
+    this.auth.logout({ returnTo: 'https://127.0.0.1:4200'})
   }
 }

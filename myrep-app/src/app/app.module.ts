@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment as env } from '../environments/environment';
 import { LogoutComponent } from './logout/logout.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { LogoutComponent } from './logout/logout.component';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
