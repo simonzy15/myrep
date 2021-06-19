@@ -1,0 +1,11 @@
+<style>
+    *{font-family: "Raleway", sans-serif}
+</style>
+    
+<div *ngIf="auth.user$ | async as user">
+    <div>{{ user.email }}</div>
+</div>
+
+<div *ngIF="profileJson">
+    <pre>{{profileJson}}</pre>
+</div>
