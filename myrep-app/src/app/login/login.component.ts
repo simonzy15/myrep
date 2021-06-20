@@ -7,7 +7,6 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
   constructor(
     public auth: AuthService,
   ) {
@@ -18,7 +17,10 @@ export class LoginComponent implements OnInit {
 
   public login(): void {
     this.auth.loginWithRedirect({ 
-      redirect_uri: window.location.origin
-    });
+      redirect_uri: window.location.origin,
+      appState: { target: '/profile'}
+    })
+
+
   }
 }
