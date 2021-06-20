@@ -52,27 +52,27 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["id"])
 
-	// userinfo, err := db.Query("select USER_ID, USER_NAME from USERS where USER_ID = 12")
-	// if err != nil {
-	// 	// return
-	// 	log.Fatal(err)
-	// 	return
-	// }
+	userinfo, err := DB.Query("select USER_NAME from USERS where USER_ID = ?", params["id"])
+	if err != nil {
+		// return
+		log.Fatal(err)
+		return
+	}
 
-	// defer userinfo.Close()
+	defer userinfo.Close()
 
-	// var (
-	// 	id   int
-	// 	name string
-	// )
+	var (
+		id   int
+		name string
+	)
 
-	// for userinfo.Next() {
-	// 	err := userinfo.Scan(&id, &name)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	log.Println(id, name)
-	// }
+	for userinfo.Next() {
+		err := userinfo.Scan(&id, &name)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(id, name)
+	}
 
 	// for _, item := range users {
 	// 	if item.ID == params["id"] {
@@ -87,17 +87,19 @@ func main() {
 
 	// database connection
 
-	DB, err := sql.Open("mysql", "admin:123234w1nd0w@tcp(myrep-db.cqmo4rbwc6vu.us-east-2.rds.amazonaws.com:3306)/USER_DATA")
+	db, err := sql.Open("mysql", "admin:123234w1nd0w@tcp(myrep-db.cqmo4rbwc6vu.us-east-2.rds.amazonaws.com:3306)/USER_DATA")
 	if err != nil {
 		panic(err)
 	}
+
+	DB = db
 
 	err = DB.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	userinfo, err := DB.Query("select USER_ID, USER_NAME from USERS where USER_ID = 12")
+	userinfo, err := DB.Query("select USER_NAME from USERS where USER_NAME = 'Max'")
 	if err != nil {
 		// return
 		log.Fatal(err)
