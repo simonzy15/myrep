@@ -33,6 +33,12 @@ type userCreation struct {
 	Bio      string `json:"bio"`
 }
 
+type userUpdate struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Bio      string `json:"bio"`
+}
+
 // var users []User
 var DB *sql.DB
 var currentUser User
@@ -127,6 +133,80 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	// json.NewEncoder(w).Encode(users)
 }
 
+func editUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+
+	decoder := json.NewDecoder(r.Body)
+
+	var editUser userUpdate
+
+	err := decoder.Decode(&editUser)
+
+	editQuery, err := DB.Query("UPDATE USERS SET USER_NAME = ?, USER_BIO = ?, USER_EMAIL = ? where USER_ID = ?")
+
+	if err != nil {
+		log.Printf("Error %s when preparing Decoding statement", err)
+		return
+	}
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, editQuery)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, createdUser.ID, createdUser.Username, createdUser.Bio, createdUser.Email)
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products created ", rows)
+
+	fmt.Println(params["id"])
+
+	if err != nil {
+		// return
+		log.Fatal(err)
+		return
+	}
+
+	defer userinfo.Close()
+
+	for userinfo.Next() {
+		err := userinfo.Scan(&currentUser.ID, &currentUser.Username)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(currentUser.ID, currentUser.Username)
+	}
+
+	// for _, item := range users {
+	// 	if item.ID == params["id"] {
+	// 		json.NewEncoder(w).Encode(item)
+	// 		return
+	// 	}
+	// }
+	// json.NewEncoder(w).Encode(users)
+}
+
 func main() {
 
 	// database connection
@@ -151,6 +231,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET")
+	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":8001", router))
 
