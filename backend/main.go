@@ -1,14 +1,13 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand"
 	"myrep/pkg1"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -27,6 +26,12 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type userCreation struct {
+	ID       string `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 var users []User
 var DB *sql.DB
 var currentUser User
@@ -36,11 +41,31 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	var user User
-	_ = json.NewDecoder(r.Body).Decode(&user)
-	user.ID = strconv.Itoa(rand.Intn(100000000))
-	users = append(users, user)
-	json.NewEncoder(w).Encode(user)
+
+	r.ParseForm()
+
+	insertQuery := "INSERT INTO COMMENTS( USER_ID, USER_BIO ) VALUES (?, ?)"
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, r.ParseForm())
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, p.name, p.price)
+
+	// var user User
+	// _ = json.NewDecoder(r.Body).Decode(&user)
+	// user.ID = strconv.Itoa(rand.Intn(100000000))
+	// users = append(users, user)
+	// json.NewEncoder(w).Encode(user)
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +77,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["id"])
 
-	userinfo, err := DB.Query("select USER_NAME from USERS where USER_ID = ?", params["id"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID from COMMENTS where USER_ID = ?", params["id"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -61,17 +86,12 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	defer userinfo.Close()
 
-	var (
-		id   int
-		name string
-	)
-
 	for userinfo.Next() {
-		err := userinfo.Scan(&id, &name)
+		err := userinfo.Scan(&currentUser.ID, &currentUser.Username)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(id, name)
+		log.Println(currentUser.ID, currentUser.Username)
 	}
 
 	// for _, item := range users {
@@ -99,27 +119,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	userinfo, err := DB.Query("select USER_NAME from USERS where USER_NAME = 'Max'")
-	if err != nil {
-		// return
-		log.Fatal(err)
-		return
-	}
-
-	defer userinfo.Close()
-
-	var (
-		id   int
-		name string
-	)
-
-	for userinfo.Next() {
-		err := userinfo.Scan(&id, &name)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println(id, name)
-	}
 	// See "Important settings" section.
 	DB.SetConnMaxLifetime(time.Minute * 3)
 	DB.SetMaxOpenConns(10)
