@@ -15,10 +15,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Register struct {
-	User  *User  `jason:"user"`
-	Email string `json:"email"`
-}
+// type Register struct {
+// 	User  *User  `jason:"user"`
+// 	Email string `json:"email"`
+// }
 
 type User struct {
 	ID       string `json:"id"`
@@ -27,12 +27,13 @@ type User struct {
 }
 
 type userCreation struct {
-	ID       string `json:"id"`
+	ID       int    `json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password"`
+	Email    string `json:"email"`
+	Bio      string `json:"bio"`
 }
 
-var users []User
+// var users []User
 var DB *sql.DB
 var currentUser User
 
@@ -42,15 +43,26 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	r.ParseForm()
+	decoder := json.NewDecoder(r.Body)
 
-	insertQuery := "INSERT INTO COMMENTS( USER_ID, USER_BIO ) VALUES (?, ?)"
+	var createdUser userCreation
+
+	err := decoder.Decode(&createdUser)
+
+	log.Println(createdUser.Email)
+
+	if err != nil {
+		log.Printf("Error %s when preparing Decoding statement", err)
+		return
+	}
+
+	insertQuery := "INSERT INTO USERS( USER_ID, USER_NAME, USER_BIO, USER_EMAIL ) VALUES (?, ?, ?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
 	defer cancelfunc()
 
-	stmt, err := DB.PrepareContext(ctx, r.ParseForm())
+	stmt, err := DB.PrepareContext(ctx, insertQuery)
 
 	if err != nil {
 		log.Printf("Error %s when preparing SQL statement", err)
@@ -59,7 +71,19 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, p.name, p.price)
+	res, err := stmt.ExecContext(ctx, createdUser.ID, createdUser.Username, createdUser.Bio, createdUser.Email)
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products created ", rows)
 
 	// var user User
 	// _ = json.NewDecoder(r.Body).Decode(&user)
@@ -73,7 +97,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	json.NewEncoder(w).Encode(users)
+	// json.NewEncoder(w).Encode(users)
 
 	fmt.Println(params["id"])
 
