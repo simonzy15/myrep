@@ -112,7 +112,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["id"])
 
-	userinfo, err := DB.Query("select USER_NAME, USER_ID from COMMENTS where USER_ID = ?", params["id"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_ID = ?", params["id"])
 	if err != nil {
 		// return
 		log.Fatal(err)
