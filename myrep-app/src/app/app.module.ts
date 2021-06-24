@@ -21,6 +21,7 @@ import { environment as env } from '../environments/environment';
 import { LogoutComponent } from './logout/logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserComponent } from './user/user.component';
+import { ProfiledataService } from './profiledata.service';
 
 @NgModule({
   declarations: [
@@ -44,13 +45,14 @@ import { UserComponent } from './user/user.component';
     MatInputModule,
     MatButtonModule,
 
-    // Import the module into the application, with configuration
     AuthModule.forRoot({
       ... env.auth,
     })
 
   ],
-  providers: [],
+  providers: [
+    ProfiledataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
