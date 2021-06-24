@@ -20,7 +20,5 @@ export class LoginComponent implements OnInit {
       redirect_uri: window.location.origin,
       appState: { target: '/profile'}
     })
-
-
   }
 }

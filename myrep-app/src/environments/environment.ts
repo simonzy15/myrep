@@ -3,5 +3,6 @@ export const environment = {
   auth: {
     domain : 'dev-8z3b7ajm.us.auth0.com',
     clientId : 'zwhMLIbxzfTWildS0YG0iTGQXXTYEJxj'
-  }
+  },
+  backendPath: 'http//localhost:8001'
 };
