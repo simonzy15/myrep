@@ -39,6 +39,13 @@ type userUpdate struct {
 	Bio      string `json:"bio"`
 }
 
+type commentStruct struct {
+	User_ID     string `json:"user_id"`
+	Comment     string `json:"comment"`
+	Author_ID   string `json:"author"`
+	Author_Name string `json:"author_name"`
+}
+
 // var users []User
 var DB *sql.DB
 var currentUser User
@@ -105,7 +112,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["id"])
 
-	userinfo, err := DB.Query("select USER_NAME, USER_ID from COMMENTS where USER_ID = ?", params["id"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_ID = ?", params["id"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -219,6 +226,70 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	// json.NewEncoder(w).Encode(users)
 }
 
+func addComment(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	// params := mux.Vars(r)
+
+	decoder := json.NewDecoder(r.Body)
+
+	var comment commentStruct
+
+	err := decoder.Decode(&comment)
+
+	if err != nil {
+		log.Printf("Error %s when preparing DECODING statement", err)
+		return
+	}
+
+	// USER_NAME = ?, USER_BIO = ?, USER_EMAIL = ? where USER_ID = ?
+
+	insertQuery := "INSERT INTO COMMENTS( USER_ID, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, insertQuery)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, comment.User_ID, comment.Author_Name, comment.Comment, time.Now())
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products edited ", rows)
+
+	if err != nil {
+		// return
+		log.Fatal(err)
+		return
+	}
+
+	// for _, item := range users {
+	// 	if item.ID == params["id"] {
+	// 		json.NewEncoder(w).Encode(item)
+	// 		return
+	// 	}
+	// }
+	// json.NewEncoder(w).Encode(users)
+}
+
 func main() {
 
 	// database connection
@@ -242,6 +313,7 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
+	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
 	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET")
 	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
 
