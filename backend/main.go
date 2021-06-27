@@ -9,13 +9,12 @@ import (
 	"myrep/pkg1"
 	"net/http"
 	"time"
-
 	"github.com/gorilla/mux"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// type Register struct {
+// type Regist:er struct {
 // 	User  *User  `jason:"user"`
 // 	Email string `json:"email"`
 // }
@@ -317,7 +316,7 @@ func main() {
 	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET")
 	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
 
-	log.Fatal(http.ListenAndServe(":8001", router))
+	log.Fatal(http.ListenAndServeTLS(":8001", "../../cert/localhost.crt", "../../cert/localhost.key", router))
 
 	pkg1.Add()
 
