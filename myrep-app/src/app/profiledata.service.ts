@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from '../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProfileData } from './profile/profile.component';
 
 @Injectable({
@@ -14,10 +14,10 @@ export class ProfiledataService {
   ) {
     this.path = env.backendPath
   }
-
+  
   public getProfileData(): ProfileData {
     this.http.get(
-      this.path + '/api/getuser/12'
+      this.path + '/api/getuser/12',
     ).subscribe(
       res => {
         console.log(res)

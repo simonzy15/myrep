@@ -313,7 +313,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
-	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET")
+	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", "../../cert/localhost.crt", "../../cert/localhost.key", router))
