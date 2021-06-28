@@ -125,9 +125,10 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		json.NewEncoder(w).Encode(currentUser)
 		log.Println(currentUser.ID, currentUser.Username)
 	}
-
+	return
 	// for _, item := range users {
 	// 	if item.ID == params["id"] {
 	// 		json.NewEncoder(w).Encode(item)
