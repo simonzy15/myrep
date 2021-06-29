@@ -8,8 +8,11 @@ import (
 	"log"
 	"myrep/pkg1"
 	"net/http"
+	"os"
 	"time"
+
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -294,8 +297,19 @@ func main() {
 
 	// database connection
 
-	db, err := sql.Open("mysql", "admin:123234w1nd0w@tcp(myrep-db.cqmo4rbwc6vu.us-east-2.rds.amazonaws.com:3306)/USER_DATA")
+	err := godotenv.Load()
 	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	engine := os.Getenv("RDS_ENGINE")
+	connectionString := os.Getenv("RDS_CONNECTION_STRING")
+	certPath := os.Getenv("CERT_PATH")
+	keyPath := os.Getenv("KEY_PATH")
+
+	db, err := sql.Open(engine, connectionString)
+	if err != nil {
+		log.Fatal("Error loading connecting to SQL")
 		panic(err)
 	}
 
@@ -317,7 +331,7 @@ func main() {
 	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
 
-	log.Fatal(http.ListenAndServeTLS(":8001", "../../cert/localhost.crt", "../../cert/localhost.key", router))
+	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
 	pkg1.Add()
 
