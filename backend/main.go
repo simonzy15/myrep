@@ -112,9 +112,9 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	// json.NewEncoder(w).Encode(users)
 
-	fmt.Println(params["id"])
+	fmt.Println(params["username"])
 
-	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_ID = ?", params["id"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_NAME = ?", params["username"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -181,7 +181,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		count++
 	}
 
-	editQuery += " WHERE USER_ID = " + params["id"]
+	editQuery += " WHERE USER_NAME = " + params["username"]
 
 	fmt.Println(editQuery)
 
@@ -212,7 +212,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%d products edited ", rows)
 
-	fmt.Println(params["id"])
+	fmt.Println(params["username"])
 
 	if err != nil {
 		// return
@@ -328,8 +328,8 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
-	router.HandleFunc("/api/getuser/{id}", getUser).Methods("GET", "OPTIONS")
-	router.HandleFunc("/api/edituser/{id}", editUser).Methods("PUT")
+	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
