@@ -21,10 +21,9 @@ export class ProfileComponent implements OnInit {
       (profile) => {
         this.profileJson = JSON.stringify(profile, null, 2);
         this.setLocalStorage();
+        this.profileDataService.getProfileData();
       }
     )
-
-    this.profileDataService.getProfileData();
   }
   public setLocalStorage(): void {
     const data = JSON.parse(this.profileJson);
