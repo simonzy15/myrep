@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { ProfiledataService } from '../profiledata.service';
-
-export interface ProfileData {
-  username: string;
-  bio: string;
-}
+import { ProfileData, ProfiledataService } from '../profiledata.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +9,6 @@ export interface ProfileData {
 })
 export class ProfileComponent implements OnInit {
   public profileJson: string = '';
-  private profileData: ProfileData;
 
   constructor(
     public auth: AuthService,
@@ -30,7 +24,7 @@ export class ProfileComponent implements OnInit {
       }
     )
 
-    this.profileData = this.profileDataService.getProfileData();
+    this.profileDataService.getProfileData();
   }
   public setLocalStorage(): void {
     const data = JSON.parse(this.profileJson);
