@@ -17,11 +17,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// type Regist:er struct {
-// 	User  *User  `jason:"user"`
-// 	Email string `json:"email"`
-// }
-
 type User struct {
 	ID        string `json:"id"`
 	Username  string `json:"username"`
@@ -47,7 +42,6 @@ type commentStruct struct {
 	Author_Name string `json:"author_name"`
 }
 
-// var users []User
 var DB *sql.DB
 var currentUser User
 
@@ -96,12 +90,6 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("%d products created ", rows)
-
-	// var user User
-	// _ = json.NewDecoder(r.Body).Decode(&user)
-	// user.ID = strconv.Itoa(rand.Intn(100000000))
-	// users = append(users, user)
-	// json.NewEncoder(w).Encode(user)
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +97,6 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	// json.NewEncoder(w).Encode(users)
 
 	fmt.Println(params["username"])
 
@@ -130,14 +117,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(currentUser)
 		log.Println(currentUser.ID, currentUser.Username)
 	}
-	// return
-	// for _, item := range users {
-	// 	if item.ID == params["id"] {
-	// 		json.NewEncoder(w).Encode(item)
-	// 		return
-	// 	}
-	// }
-	// json.NewEncoder(w).Encode(users)
+	return
 }
 
 func editUser(w http.ResponseWriter, r *http.Request) {
@@ -154,8 +134,6 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	count := 0
 
 	err := decoder.Decode(&editUser)
-
-	// USER_NAME = ?, USER_BIO = ?, USER_EMAIL = ? where USER_ID = ?
 
 	editQuery := "UPDATE USERS SET "
 
@@ -218,14 +196,6 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
-
-	// for _, item := range users {
-	// 	if item.ID == params["id"] {
-	// 		json.NewEncoder(w).Encode(item)
-	// 		return
-	// 	}
-	// }
-	// json.NewEncoder(w).Encode(users)
 }
 
 func addComment(w http.ResponseWriter, r *http.Request) {
@@ -245,8 +215,6 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error %s when preparing DECODING statement", err)
 		return
 	}
-
-	// USER_NAME = ?, USER_BIO = ?, USER_EMAIL = ? where USER_ID = ?
 
 	insertQuery := "INSERT INTO COMMENTS( USER_ID, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
 
@@ -278,23 +246,12 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%d products edited ", rows)
 
 	if err != nil {
-		// return
 		log.Fatal(err)
 		return
 	}
-
-	// for _, item := range users {
-	// 	if item.ID == params["id"] {
-	// 		json.NewEncoder(w).Encode(item)
-	// 		return
-	// 	}
-	// }
-	// json.NewEncoder(w).Encode(users)
 }
 
 func main() {
-
-	// database connection
 
 	err := godotenv.Load()
 	if err != nil {
