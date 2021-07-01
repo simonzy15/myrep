@@ -36,6 +36,7 @@ export class ProfiledataService {
         else {
           this.profileData = res
         }
+        return
       }
     )
   }
@@ -50,6 +51,10 @@ export class ProfiledataService {
     this.http.post<any>(
       this.path + '/api/register',
       body
+    ).subscribe(
+      res => {
+        console.log(res)
+      }
     )
   }
 

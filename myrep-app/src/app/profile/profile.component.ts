@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
         this.profileJson = JSON.stringify(profile, null, 2);
         this.setLocalStorage();
         this.profileDataService.getProfileData();
+        console.log(this.profileDataService.profileData)
       }
     )
   }
