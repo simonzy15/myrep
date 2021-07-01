@@ -23,16 +23,15 @@ import (
 // }
 
 type User struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ID        string `json:"id"`
+	Username  string `json:"username"`
+	Bio       string `json:"bio"`
+	Upvotes   string `json:"upvotes"`
+	Downvotes string `json:"downvotes"`
 }
 
 type userCreation struct {
-	ID       int    `json:"id"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
-	Bio      string `json:"bio"`
 }
 
 type userUpdate struct {
@@ -69,7 +68,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO USERS( USER_ID, USER_NAME, USER_BIO, USER_EMAIL ) VALUES (?, ?, ?, ?)"
+	insertQuery := "INSERT INTO USERS( USER_NAME ) VALUES (?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -84,7 +83,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, createdUser.ID, createdUser.Username, createdUser.Bio, createdUser.Email)
+	res, err := stmt.ExecContext(ctx, createdUser.Username)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -114,7 +113,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["username"])
 
-	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_NAME = ?", params["username"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES from USERS where USER_NAME = ?", params["username"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -124,14 +123,14 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	defer userinfo.Close()
 
 	for userinfo.Next() {
-		err := userinfo.Scan(&currentUser.ID, &currentUser.Username)
+		err := userinfo.Scan(&currentUser.Username, &currentUser.ID, &currentUser.Bio, &currentUser.Upvotes, &currentUser.Downvotes)
 		if err != nil {
 			log.Fatal(err)
 		}
 		json.NewEncoder(w).Encode(currentUser)
 		log.Println(currentUser.ID, currentUser.Username)
 	}
-	return
+	// return
 	// for _, item := range users {
 	// 	if item.ID == params["id"] {
 	// 		json.NewEncoder(w).Encode(item)
@@ -173,13 +172,13 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		count++
 	}
 
-	if editUser.Username != "" {
-		if count > 0 {
-			editQuery += ", "
-		}
-		editQuery += "USER_NAME = \"" + editUser.Username + "\""
-		count++
-	}
+	// if editUser.Username != "" {
+	// 	if count > 0 {
+	// 		editQuery += ", "
+	// 	}
+	// 	editQuery += "USER_NAME = \"" + editUser.Username + "\""
+	// 	count++
+	// }
 
 	editQuery += " WHERE USER_NAME = " + params["username"]
 
