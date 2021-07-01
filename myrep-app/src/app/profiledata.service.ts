@@ -30,7 +30,6 @@ export class ProfiledataService {
       this.path + '/api/getuser/' + this.usernameStore,
     ).subscribe(
       res => {
-        console.log(res)
         if (res === null) {
           this.createProfile(this.usernameStore)
         }
@@ -48,14 +47,9 @@ export class ProfiledataService {
     var body = JSON.stringify({
       'username': username
     })
-    console.log(body)
     this.http.post<any>(
       this.path + '/api/register',
       body
-    ).subscribe(
-      res => {
-        console.log(res)
-      }
     )
   }
 
