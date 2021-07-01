@@ -27,7 +27,7 @@ export class ProfiledataService {
   public getProfileData(): void {
     this.usernameStore = localStorage.getItem('username');
     this.http.get<ProfileData>(
-      this.path + '/api/getuser/testaccount',
+      this.path + '/api/getuser/' + this.usernameStore,
     ).subscribe(
       res => {
         console.log(res)
