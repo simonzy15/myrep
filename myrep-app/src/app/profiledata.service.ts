@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from '../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface ProfileData {
   id: string;
@@ -16,28 +17,15 @@ export interface ProfileData {
 export class ProfiledataService {
   public state: string;
   public path: string;
-  public profileData: ProfileData;
-  public usernameStore: any;
   constructor(
     private http: HttpClient
   ) {
     this.path = env.backendPath
   }
   
-  public getProfileData(): void {
-    this.usernameStore = localStorage.getItem('username');
-    this.http.get<ProfileData>(
-      this.path + '/api/getuser/' + this.usernameStore,
-    ).subscribe(
-      res => {
-        if (res === null) {
-          this.createProfile(this.usernameStore)
-        }
-        else {
-          this.profileData = res
-        }
-        return
-      }
+  public getProfileData(username: any): Observable<ProfileData> {
+    return this.http.get<ProfileData>(
+      this.path + '/api/getuser/' + username,
     )
   }
   
@@ -53,7 +41,7 @@ export class ProfiledataService {
       body
     ).subscribe(
       res => {
-        console.log(res)
+        return
       }
     )
   }
