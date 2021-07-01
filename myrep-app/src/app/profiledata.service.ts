@@ -17,6 +17,7 @@ export class ProfiledataService {
   public state: string;
   public path: string;
   public profileData: ProfileData;
+  public usernameStore: any;
   constructor(
     private http: HttpClient
   ) {
@@ -24,13 +25,14 @@ export class ProfiledataService {
   }
   
   public getProfileData(): void {
+    this.usernameStore = localStorage.getItem('username');
     this.http.get<ProfileData>(
       this.path + '/api/getuser/testaccount',
     ).subscribe(
       res => {
         console.log(res)
         if (res === null) {
-          this.createProfile(localStorage.getItem('username'))
+          this.createProfile(this.usernameStore)
         }
         else {
           this.profileData = res
