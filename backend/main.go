@@ -46,13 +46,11 @@ var DB *sql.DB
 var currentUser User
 
 func createUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	decoder := json.NewDecoder(r.Body)
-
 	var createdUser userCreation
 
 	err := decoder.Decode(&createdUser)
