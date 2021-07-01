@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { ProfiledataService } from '../profiledata.service';
+import { ProfileData, ProfiledataService } from '../profiledata.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,6 +9,8 @@ import { ProfiledataService } from '../profiledata.service';
 })
 export class ProfileComponent implements OnInit {
   public profileJson: string = '';
+  public usernameStore: string;
+  public profileData: ProfileData;
 
   constructor(
     public auth: AuthService,
@@ -21,13 +23,32 @@ export class ProfileComponent implements OnInit {
       (profile) => {
         this.profileJson = JSON.stringify(profile, null, 2);
         this.setLocalStorage();
-        this.profileDataService.getProfileData();
-        console.log(this.profileDataService.profileData)
+        this.profileDataService.getProfileData(this.usernameStore).subscribe(
+          res => {
+            if (res === null) {
+              this.profileDataService.createProfile(this.usernameStore)
+              this.profileData = {
+                id: 'NA',
+                username: this.usernameStore,
+                bio: '',
+                upvotes: '',
+                downvotes: ''
+              }
+              console.log(this.profileData)
+
+            }
+            else {
+              this.profileData = res
+              console.log(this.profileData)
+            }
+          }
+        );
       }
     )
   }
   public setLocalStorage(): void {
     const data = JSON.parse(this.profileJson);
+    this.usernameStore = data["preferred_username"]
     localStorage.setItem('username', data["preferred_username"]);
   }
 }
