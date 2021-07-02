@@ -10,6 +10,11 @@
     <pre>{{profileJson}}</pre>
 </div>
 
+<div *ngIf="auth.user$ | async as user">
+    <img src={{user.picture}} >
+    <div>{{ user.preferred_username }}</div>
+    <div>{{ user.email }}</div>
+</div>
 <div>
     <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <label>
