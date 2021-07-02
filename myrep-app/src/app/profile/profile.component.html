@@ -9,3 +9,13 @@
 <div *ngIf="profileJson">
     <pre>{{profileJson}}</pre>
 </div>
+
+<div>
+    <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <label>
+            Bio:
+            <input type = "text" formControlName="bio">
+        </label>
+        <button type="submit">Save</button>
+    </form>
+</div>
