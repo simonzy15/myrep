@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ProfileData, ProfiledataService } from '../profiledata.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -8,11 +9,13 @@ import { ProfileData, ProfiledataService } from '../profiledata.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  profileForm: FormGroup;
   public profileJson: string = '';
   public usernameStore: string;
   public profileData: ProfileData;
 
   constructor(
+    private fb: FormBuilder,
     public auth: AuthService,
     public profileDataService: ProfiledataService
   ) {
@@ -41,14 +44,27 @@ export class ProfileComponent implements OnInit {
               this.profileData = res
               console.log(this.profileData)
             }
+
+            this.initForm();
           }
         );
       }
     )
   }
+
+  private initForm(): void {
+    this.profileForm = this.fb.group({
+      bio: this.profileData.bio
+    })
+  }
+
   public setLocalStorage(): void {
     const data = JSON.parse(this.profileJson);
     this.usernameStore = data["preferred_username"]
     localStorage.setItem('username', data["preferred_username"]);
+  }
+
+  onSubmit(): void{
+    console.log(this.profileForm);
   }
 }
