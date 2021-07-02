@@ -28,6 +28,15 @@ export class ProfiledataService {
       this.path + '/api/getuser/' + username,
     )
   }
+
+  public updateBio(username: string, newBio: string): Observable<any> {
+    return this.http.put(
+      this.path + '/api/edituser/' + username,
+      JSON.stringify({
+        'bio': newBio
+      })
+    )
+  }
   
   public createProfile(username: any): void{
     if (username === null) {
