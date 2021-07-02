@@ -147,7 +147,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		count++
 	}
 
-	editQuery += " WHERE USER_NAME = " + params["username"]
+	editQuery += " WHERE USER_NAME = \"" + params["username"] + "\""
 
 	fmt.Println(editQuery)
 
