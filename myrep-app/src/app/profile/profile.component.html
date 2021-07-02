@@ -1,17 +1,9 @@
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
-    
-<div *ngIf="auth.user$ | async as user">
-    <div>{{ user.email }}</div>
-</div>
-
-<div *ngIf="profileJson">
-    <pre>{{profileJson}}</pre>
-</div>
 
 <div *ngIf="auth.user$ | async as user">
-    <img src={{user.picture}} >
+    <img [src]="user.picture" >
     <div>{{ user.preferred_username }}</div>
     <div>{{ user.email }}</div>
 </div>
@@ -23,4 +15,9 @@
         </label>
         <button type="submit">Save</button>
     </form>
+</div>
+
+<div *ngIf= "profileData">
+    {{ profileData.upvotes }}
+    {{ profileData.downvotes }}
 </div>

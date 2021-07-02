@@ -64,7 +64,14 @@ export class ProfileComponent implements OnInit {
     localStorage.setItem('username', data["preferred_username"]);
   }
 
-  onSubmit(): void{
-    console.log(this.profileForm);
+  onSubmit(): void {
+    const newBio = this.profileForm.value['bio']
+    if (newBio !== this.profileData.bio) {
+      this.profileDataService.updateBio(this.profileData.username, newBio).subscribe(
+        res => {
+          console.log("Updated")
+        }
+      );
+    }
   }
 }
