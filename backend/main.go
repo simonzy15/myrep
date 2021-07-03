@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"myrep/pkg1"
 	"net/http"
 	"os"
 	"time"
@@ -279,8 +278,6 @@ func main() {
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
-
-	pkg1.Add()
 
 	// defer db.Close()
 }
