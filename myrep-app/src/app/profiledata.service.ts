@@ -9,6 +9,7 @@ export interface ProfileData {
   bio: string;
   upvotes: string;
   downvotes: string;
+  picture: string;
 }
 
 @Injectable({
@@ -39,12 +40,13 @@ export class ProfiledataService {
     )
   }
   
-  public createProfile(username: any): void{
+  public createProfile(username: any, picture: string): void{
     if (username === null) {
       return
     }
     var body = JSON.stringify({
-      'username': username
+      'username': username,
+      'picture': picture
     })
     this.http.post<any>(
       this.path + '/api/register',
