@@ -27,6 +27,7 @@ type User struct {
 
 type userCreation struct {
 	Username string `json:"username"`
+	Picture  string `json:"picture"`
 }
 
 type userUpdate struct {
@@ -60,7 +61,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO USERS( USER_NAME ) VALUES (?)"
+	insertQuery := "INSERT INTO USERS( USER_NAME, USER_PICTURE ) VALUES (?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -75,7 +76,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, createdUser.Username)
+	res, err := stmt.ExecContext(ctx, createdUser.Username, createdUser.Picture)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
