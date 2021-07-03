@@ -122,6 +122,8 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT")
+	
 	params := mux.Vars(r)
 
 	decoder := json.NewDecoder(r.Body)

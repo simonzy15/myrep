@@ -30,11 +30,12 @@ export class ProfiledataService {
   }
 
   public updateBio(username: string, newBio: string): Observable<any> {
+    var body = JSON.stringify({
+      'bio': newBio
+    })
     return this.http.put(
       this.path + '/api/edituser/' + username,
-      JSON.stringify({
-        'bio': newBio
-      })
+      body
     )
   }
   
