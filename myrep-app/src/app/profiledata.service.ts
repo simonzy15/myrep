@@ -48,11 +48,7 @@ export class ProfiledataService {
     this.http.post<any>(
       this.path + '/api/register',
       body
-    ).subscribe(
-      res => {
-        return
-      }
-    )
+    ).subscribe()
   }
 
 }
