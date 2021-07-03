@@ -67,11 +67,7 @@ export class ProfileComponent implements OnInit {
   onSubmit(): void {
     const newBio = this.profileForm.value['bio']
     if (newBio !== this.profileData.bio) {
-      this.profileDataService.updateBio(this.profileData.username, newBio).subscribe(
-        res => {
-          console.log("Updated")
-        }
-      );
+      this.profileDataService.updateBio(this.profileData.username, newBio).subscribe();
     }
   }
 }
