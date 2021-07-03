@@ -122,7 +122,8 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
-
+	w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT")
+	
 	params := mux.Vars(r)
 
 	decoder := json.NewDecoder(r.Body)
@@ -148,15 +149,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		count++
 	}
 
-	// if editUser.Username != "" {
-	// 	if count > 0 {
-	// 		editQuery += ", "
-	// 	}
-	// 	editQuery += "USER_NAME = \"" + editUser.Username + "\""
-	// 	count++
-	// }
-
-	editQuery += " WHERE USER_NAME = " + params["username"]
+	editQuery += " WHERE USER_NAME = \"" + params["username"] + "\""
 
 	fmt.Println(editQuery)
 
@@ -282,8 +275,8 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
-	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET", "OPTIONS")
-	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT")
+	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
+	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
