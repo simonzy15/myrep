@@ -22,6 +22,7 @@ type User struct {
 	Bio       string `json:"bio"`
 	Upvotes   string `json:"upvotes"`
 	Downvotes string `json:"downvotes"`
+	Picture   string `json:"picture"`
 }
 
 type userCreation struct {
@@ -97,7 +98,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(params["username"])
 
-	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES from USERS where USER_NAME = ?", params["username"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES, USER_PICTURE from USERS where USER_NAME = ?", params["username"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -107,7 +108,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	defer userinfo.Close()
 
 	for userinfo.Next() {
-		err := userinfo.Scan(&currentUser.Username, &currentUser.ID, &currentUser.Bio, &currentUser.Upvotes, &currentUser.Downvotes)
+		err := userinfo.Scan(&currentUser.Username, &currentUser.ID, &currentUser.Bio, &currentUser.Upvotes, &currentUser.Downvotes, &currentUser.Picture)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -122,7 +123,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT")
-	
+
 	params := mux.Vars(r)
 
 	decoder := json.NewDecoder(r.Body)
