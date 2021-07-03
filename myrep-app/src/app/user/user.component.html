@@ -1,1 +1,11 @@
-<p>user works!</p>
+<div *ngIf= "exists; then displayData else error"></div>
+    <ng-template #displayData>
+        <div>{{ profileData.username }}</div>
+        <div>    
+            {{ profileData.upvotes }}
+            {{ profileData.downvotes }}
+        </div>
+    </ng-template>
+    <ng-template #error>
+        <div>User not found</div>
+    </ng-template>
