@@ -50,10 +50,11 @@ export class UserComponent implements OnInit {
 
   public addComment(comment: string): void {
     var body = JSON.stringify({
-      'username': this.targetUser, // user page
+      'target': this.targetUser, // user page
       'commenter': localStorage.getItem('username'), // commenter
       'comment': comment
     })
+    console.log(body)
     this.http.post<any>(
       this.path + '/api/addcomment',
       body
