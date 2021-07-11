@@ -5,6 +5,12 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../environments/environment';
 
+export interface Comment {
+  commenter: string;
+  comment: string;
+  time: string;
+}
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -41,6 +47,13 @@ export class UserComponent implements OnInit {
         }
       }
     );
+    this.http.get(
+      this.path + '/api/getcomments/' + this.targetUser
+    ).subscribe(
+      res => {
+        console.log(res)
+      }
+    )
   }
 
   private initForm(): void {
@@ -64,7 +77,6 @@ export class UserComponent implements OnInit {
 
   onSubmit(): void {
     const newComment = this.commentForm.value['comment']
-    console.log(newComment)
     this.addComment(newComment)
     this.commentForm.reset()
   }
