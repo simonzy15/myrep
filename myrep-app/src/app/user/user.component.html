@@ -1,10 +1,18 @@
 <div *ngIf= "exists; then displayData else error"></div>
     <ng-template #displayData>
+        <img [src]="profileData.picture">
         <div>{{ profileData.username }}</div>
         <div>    
             {{ profileData.upvotes }}
             {{ profileData.downvotes }}
         </div>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+            <label>
+                Comment:
+                <input type = "text" formControlName="comment">
+            </label>
+            <button type="submit">Post</button>
+        </form>
     </ng-template>
     <ng-template #error>
         <div>User not found</div>
