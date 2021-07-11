@@ -13,7 +13,13 @@
             </label>
             <button type="submit">Post</button>
         </form>
+
+    <div><b>Comments</b></div>
+    <div *ngFor="let comment of comments">
+        {{comment.comment}}
+    </div>
     </ng-template>
+
 <div *ngIf= "showError; then error"></div>
     <ng-template #error>
         <div>User not found</div>
