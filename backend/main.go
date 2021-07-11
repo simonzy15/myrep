@@ -246,7 +246,6 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func getComments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -316,6 +315,24 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("%d products edited ", rows)
+
+	// Now we need to update the counts in the  user table by calling the stored procedure
+
+	sp_call := "CALL UPDATE_VOTE((?))"
+
+	stmt, err = DB.PrepareContext(ctx, sp_call)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SP_SQL statement", err)
+		return
+	}
+
+	res, err = stmt.ExecContext(ctx, vote.User_ID)
+
+	if err != nil {
+		log.Printf("Error %s when executing SP_SQL statement", err)
+		return
+	}
 
 	if err != nil {
 		log.Fatal(err)
