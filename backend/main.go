@@ -42,14 +42,16 @@ type userVote struct {
 	Vote      int    `json:"vote"` // 0 for downvote, 1 for upvote
 }
 
-type commentStruct struct {
+type commentData struct {
 	TargetUser string `json:"target"`
 	Commenter  string `json:"commenter"`
 	Comment    string `json:"comment"`
+	Time       string `json:"time"`
 }
 
 var DB *sql.DB
 var currentUser User
+var comment commentData
 
 func createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -101,8 +103,6 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-
-	fmt.Println(params["username"])
 
 	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES, USER_PICTURE from USERS where USER_NAME = ?", params["username"])
 	if err != nil {
@@ -202,7 +202,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 
-	var comment commentStruct
+	var comment commentData
 
 	err := decoder.Decode(&comment)
 
@@ -244,6 +244,32 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
+}
+
+
+func getComments(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	commentInfo, err := DB.Query("select USER_NAME, COMMENTER, COMMENT, COMMENT_TIME from COMMENTS where USER_NAME = ?", params["target"])
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	defer commentInfo.Close()
+	comments := make([]commentData, 0)
+
+	for commentInfo.Next() {
+		err := commentInfo.Scan(&comment.TargetUser, &comment.Commenter, &comment.Comment, &comment.Time)
+		if err != nil {
+			log.Fatal(err)
+		}
+		comments = append(comments, comment)
+	}
+	json.NewEncoder(w).Encode(comments)
+	return
 }
 
 func addVote(w http.ResponseWriter, r *http.Request) {
@@ -330,6 +356,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
+	router.HandleFunc("/api/getcomments/{target}", getComments).Methods("GET")
 	router.HandleFunc("/api/addvote", addVote).Methods("POST")
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
