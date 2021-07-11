@@ -25,24 +25,24 @@ export class ProfileComponent implements OnInit {
     this.auth.user$.subscribe(
       (profile) => {
         this.profileJson = JSON.stringify(profile, null, 2);
+        const data = JSON.parse(this.profileJson)
         this.setLocalStorage();
         this.profileDataService.getProfileData(this.usernameStore).subscribe(
           res => {
             if (res === null) {
-              this.profileDataService.createProfile(this.usernameStore)
+              this.profileDataService.createProfile(this.usernameStore, data["picture"])
               this.profileData = {
                 id: 'NA',
                 username: this.usernameStore,
                 bio: '',
                 upvotes: '',
-                downvotes: ''
+                downvotes: '',
+                picture: data["picture"]
               }
-              console.log(this.profileData)
 
             }
             else {
               this.profileData = res
-              console.log(this.profileData)
             }
 
             this.initForm();
