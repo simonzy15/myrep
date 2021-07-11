@@ -200,8 +200,6 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 
-	// params := mux.Vars(r)
-
 	decoder := json.NewDecoder(r.Body)
 
 	var comment commentStruct
