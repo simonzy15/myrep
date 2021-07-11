@@ -36,6 +36,12 @@ type userUpdate struct {
 	Bio      string `json:"bio"`
 }
 
+type userVote struct {
+	User_ID   string `json:"user_id"`
+	Author_ID string `json:"author"`
+	Vote      int    `json:"vote"` // 0 for downvote, 1 for upvote
+}
+
 type commentStruct struct {
 	User_ID     string `json:"user_id"`
 	Comment     string `json:"comment"`
@@ -243,6 +249,57 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func addVote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	decoder := json.NewDecoder(r.Body)
+
+	var vote userVote
+
+	err := decoder.Decode(&vote)
+
+	if err != nil {
+		log.Printf("Error %s when preparing DECODING statement", err)
+		return
+	}
+
+	insertQuery := "INSERT INTO VOTES( VOTE_KEY, VOTE_AUTHOR, VOTE_USER, VOTE) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE VOTE=(?)"
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, insertQuery)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, vote.Author_ID+vote.User_ID, vote.Author_ID, vote.User_ID, vote.Vote, vote.Vote)
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products edited ", rows)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
 func main() {
 
 	err := godotenv.Load()
@@ -276,6 +333,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
+	router.HandleFunc("/api/addvote", addVote).Methods("POST")
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 
