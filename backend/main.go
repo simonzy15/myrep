@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"myrep/pkg1"
 	"net/http"
 	"os"
 	"time"
@@ -23,10 +22,12 @@ type User struct {
 	Bio       string `json:"bio"`
 	Upvotes   string `json:"upvotes"`
 	Downvotes string `json:"downvotes"`
+	Picture   string `json:"picture"`
 }
 
 type userCreation struct {
 	Username string `json:"username"`
+	Picture  string `json:"picture"`
 }
 
 type userUpdate struct {
@@ -35,15 +36,22 @@ type userUpdate struct {
 	Bio      string `json:"bio"`
 }
 
-type commentStruct struct {
-	User_ID     string `json:"user_id"`
-	Comment     string `json:"comment"`
-	Author_ID   string `json:"author"`
-	Author_Name string `json:"author_name"`
+type userVote struct {
+	User_ID   string `json:"user_id"`
+	Author_ID string `json:"author"`
+	Vote      int    `json:"vote"` // 0 for downvote, 1 for upvote
+}
+
+type commentData struct {
+	TargetUser string `json:"target"`
+	Commenter  string `json:"commenter"`
+	Comment    string `json:"comment"`
+	Time       string `json:"time"`
 }
 
 var DB *sql.DB
 var currentUser User
+var comment commentData
 
 func createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -60,7 +68,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO USERS( USER_NAME ) VALUES (?)"
+	insertQuery := "INSERT INTO USERS( USER_NAME, USER_PICTURE ) VALUES (?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -75,7 +83,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, createdUser.Username)
+	res, err := stmt.ExecContext(ctx, createdUser.Username, createdUser.Picture)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -96,9 +104,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 
-	fmt.Println(params["username"])
-
-	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES from USERS where USER_NAME = ?", params["username"])
+	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES, USER_PICTURE from USERS where USER_NAME = ?", params["username"])
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -108,7 +114,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	defer userinfo.Close()
 
 	for userinfo.Next() {
-		err := userinfo.Scan(&currentUser.Username, &currentUser.ID, &currentUser.Bio, &currentUser.Upvotes, &currentUser.Downvotes)
+		err := userinfo.Scan(&currentUser.Username, &currentUser.ID, &currentUser.Bio, &currentUser.Upvotes, &currentUser.Downvotes, &currentUser.Picture)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -123,7 +129,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT")
-	
+
 	params := mux.Vars(r)
 
 	decoder := json.NewDecoder(r.Body)
@@ -194,11 +200,9 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 
-	// params := mux.Vars(r)
-
 	decoder := json.NewDecoder(r.Body)
 
-	var comment commentStruct
+	var comment commentData
 
 	err := decoder.Decode(&comment)
 
@@ -207,7 +211,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO COMMENTS( USER_ID, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
+	insertQuery := "INSERT INTO COMMENTS( USER_NAME, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -222,7 +226,84 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, comment.User_ID, comment.Author_Name, comment.Comment, time.Now())
+	res, err := stmt.ExecContext(ctx, comment.TargetUser, comment.Commenter, comment.Comment, time.Now())
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products edited ", rows)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
+
+func getComments(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	commentInfo, err := DB.Query("select USER_NAME, COMMENTER, COMMENT, COMMENT_TIME from COMMENTS where USER_NAME = ?", params["target"])
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	defer commentInfo.Close()
+	comments := make([]commentData, 0)
+
+	for commentInfo.Next() {
+		err := commentInfo.Scan(&comment.TargetUser, &comment.Commenter, &comment.Comment, &comment.Time)
+		if err != nil {
+			log.Fatal(err)
+		}
+		comments = append(comments, comment)
+	}
+	json.NewEncoder(w).Encode(comments)
+	return
+}
+
+func addVote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	decoder := json.NewDecoder(r.Body)
+
+	var vote userVote
+
+	err := decoder.Decode(&vote)
+
+	if err != nil {
+		log.Printf("Error %s when preparing DECODING statement", err)
+		return
+	}
+
+	insertQuery := "INSERT INTO VOTES( VOTE_KEY, VOTE_AUTHOR, VOTE_USER, VOTE) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE VOTE=(?)"
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, insertQuery)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, vote.Author_ID+vote.User_ID, vote.Author_ID, vote.User_ID, vote.Vote, vote.Vote)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -275,12 +356,12 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/register", createUser).Methods("POST")
 	router.HandleFunc("/api/addcomment", addComment).Methods("POST")
+	router.HandleFunc("/api/getcomments/{target}", getComments).Methods("GET")
+	router.HandleFunc("/api/addvote", addVote).Methods("POST")
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
-
-	pkg1.Add()
 
 	// defer db.Close()
 }
