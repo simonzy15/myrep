@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../environments/environment';
 
 export interface Comment {
+  target: string;
   commenter: string;
   comment: string;
   time: string;
@@ -23,6 +24,7 @@ export class UserComponent implements OnInit {
   public exists: boolean;
   public path: string;
   public showError: boolean;
+  public comments: Comment[]
 
   constructor(
     private fb: FormBuilder,
@@ -47,11 +49,11 @@ export class UserComponent implements OnInit {
         }
       }
     );
-    this.http.get(
+    this.http.get<Comment[]>(
       this.path + '/api/getcomments/' + this.targetUser
     ).subscribe(
       res => {
-        console.log(res)
+        this.comments = res
       }
     )
   }
