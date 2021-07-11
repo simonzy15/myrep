@@ -39,12 +39,10 @@ export class ProfileComponent implements OnInit {
                 downvotes: '',
                 picture: data["picture"]
               }
-              console.log(this.profileData)
 
             }
             else {
               this.profileData = res
-              console.log(this.profileData)
             }
 
             this.initForm();
