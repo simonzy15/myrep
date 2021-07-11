@@ -1,4 +1,4 @@
-<div *ngIf= "exists; then displayData else error"></div>
+<div *ngIf= "exists; then displayData"></div>
     <ng-template #displayData>
         <img [src]="profileData.picture">
         <div>{{ profileData.username }}</div>
@@ -14,6 +14,7 @@
             <button type="submit">Post</button>
         </form>
     </ng-template>
+<div *ngIf= "showError; then error"></div>
     <ng-template #error>
         <div>User not found</div>
     </ng-template>

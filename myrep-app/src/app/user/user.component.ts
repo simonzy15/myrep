@@ -16,6 +16,7 @@ export class UserComponent implements OnInit {
   public profileData: ProfileData;
   public exists: boolean;
   public path: string;
+  public showError: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +32,7 @@ export class UserComponent implements OnInit {
     this.profileDataService.getProfileData(this.targetUser).subscribe(
       res => {
         if (res === null) {
-          this.exists = false
+          this.showError = true
         }
         else {
           this.exists = true;
