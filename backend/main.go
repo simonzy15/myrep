@@ -43,10 +43,9 @@ type userVote struct {
 }
 
 type commentStruct struct {
-	User_ID     string `json:"user_id"`
-	Comment     string `json:"comment"`
-	Author_ID   string `json:"author"`
-	Author_Name string `json:"author_name"`
+	TargetUser string `json:"target"`
+	Commenter  string `json:"commenter"`
+	Comment    string `json:"comment"`
 }
 
 var DB *sql.DB
@@ -229,7 +228,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, comment.User_ID, comment.Author_Name, comment.Comment, time.Now())
+	res, err := stmt.ExecContext(ctx, comment.TargetUser, comment.Commenter, comment.Comment, time.Now())
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
