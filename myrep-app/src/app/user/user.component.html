@@ -1,1 +1,26 @@
-<p>user works!</p>
+<div *ngIf= "exists; then displayData"></div>
+    <ng-template #displayData>
+        <img [src]="profileData.picture">
+        <div>{{ profileData.username }}</div>
+        <div>    
+            {{ profileData.upvotes }}
+            {{ profileData.downvotes }}
+        </div>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+            <label>
+                Comment:
+                <input type = "text" formControlName="comment">
+            </label>
+            <button type="submit">Post</button>
+        </form>
+
+    <div><b>Comments</b></div>
+    <div *ngFor="let comment of comments">
+        {{comment.comment}}
+    </div>
+    </ng-template>
+
+<div *ngIf= "showError; then error"></div>
+    <ng-template #error>
+        <div>User not found</div>
+    </ng-template>
