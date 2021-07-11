@@ -214,7 +214,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO COMMENTS( USER_ID, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
+	insertQuery := "INSERT INTO COMMENTS( USER_NAME, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
