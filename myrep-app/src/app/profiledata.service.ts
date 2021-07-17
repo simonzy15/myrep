@@ -26,7 +26,6 @@ export class ProfiledataService {
   }
   
   public getProfileData(username: any): Observable<ProfileData> {
-    this.currentUser.next(username)
     return this.http.get<ProfileData>(
       this.path + '/api/getuser/' + username,
     )
