@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
             else {
               this.profileData = res
             }
-
+            this.profileDataService.currentUser.next(this.usernameStore)
             this.initForm();
           }
         );
