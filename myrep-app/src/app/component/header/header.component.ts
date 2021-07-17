@@ -7,7 +7,7 @@ import { AuthService } from '@auth0/auth0-angular';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  public userPage: string
   constructor(
     public auth: AuthService
   ) {
@@ -15,5 +15,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userPage = "/users/" + localStorage.getItem('username')
   }
 }
