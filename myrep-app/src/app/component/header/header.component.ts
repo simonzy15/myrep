@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileDataService.subject.subscribe(
+    this.profileDataService.currentUser.subscribe(
       res => {
         this.userPage = "/users/" + res
       }
