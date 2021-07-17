@@ -18,7 +18,7 @@ export interface ProfileData {
 export class ProfiledataService {
   public state: string;
   public path: string;
-  public subject = new Subject<string>();
+  public currentUser = new Subject<string>();
   constructor(
     private http: HttpClient
   ) {
@@ -26,7 +26,7 @@ export class ProfiledataService {
   }
   
   public getProfileData(username: any): Observable<ProfileData> {
-    this.subject.next(username)
+    this.currentUser.next(username)
     return this.http.get<ProfileData>(
       this.path + '/api/getuser/' + username,
     )
