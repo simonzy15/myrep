@@ -271,6 +271,38 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func getVote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+	// params := mux.Vars(r)
+
+	// user := params["user"]
+	// target := params["target"]
+
+	params := r.URL.Query()
+	user := params.Get("user")
+	target := params.Get("target")
+
+	vote := -1
+
+	voteInfo, err := DB.Query("select VOTE from VOTES where VOTE_KEY = ?", user+">"+target)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	defer voteInfo.Close()
+
+	for voteInfo.Next() {
+		err := voteInfo.Scan(&vote)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	json.NewEncoder(w).Encode(vote)
+}
+
 func addVote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -302,7 +334,7 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, vote.Author_ID+vote.User_ID, vote.Author_ID, vote.User_ID, vote.Vote, vote.Vote)
+	res, err := stmt.ExecContext(ctx, vote.Author_ID+">"+vote.User_ID, vote.Author_ID, vote.User_ID, vote.Vote, vote.Vote)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -376,6 +408,7 @@ func main() {
 	router.HandleFunc("/api/getcomments/{target}", getComments).Methods("GET")
 	router.HandleFunc("/api/addvote", addVote).Methods("POST")
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
+	router.HandleFunc("/api/getvote", getVote).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
