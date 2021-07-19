@@ -25,6 +25,9 @@ export class UserComponent implements OnInit {
   public path: string;
   public showError: boolean;
   public comments: Comment[]
+  public userName: any;
+
+  public defaultVote: number;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +59,8 @@ export class UserComponent implements OnInit {
         this.comments = res
       }
     )
+
+    this.voteRelation()
   }
 
   private initForm(): void {
@@ -64,6 +69,31 @@ export class UserComponent implements OnInit {
     })
   }
 
+  public voteRelation(): void {
+    this.userName = localStorage.getItem('username')
+    if (this.userName !== null) {
+      this.profileDataService.currentUser.next(this.userName)
+    } 
+    this.http.get(
+      env.backendPath + '/api/getvote',
+      {
+        params: {
+          user: this.userName,
+          target: this.targetUser
+        }
+      }
+    ).subscribe(
+      res => {
+        if (res == 1) {
+          this.defaultVote = 1
+        }
+        else if (res == 0) {
+          this.defaultVote = 0
+        }
+        return
+      }
+    )
+  }
   public addComment(comment: string): void {
     var body = JSON.stringify({
       'target': this.targetUser, // user page
