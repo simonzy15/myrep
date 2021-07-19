@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export interface ProfileData {
   id: string;
@@ -18,6 +18,7 @@ export interface ProfileData {
 export class ProfiledataService {
   public state: string;
   public path: string;
+  public currentUser = new Subject<string>();
   constructor(
     private http: HttpClient
   ) {

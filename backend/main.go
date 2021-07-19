@@ -37,8 +37,8 @@ type userUpdate struct {
 }
 
 type userVote struct {
-	User_ID   string `json:"user_id"`
-	Author_ID string `json:"author"`
+	TargetUser   string `json:"target"`
+	Author string `json:"author"`
 	Vote      int    `json:"vote"` // 0 for downvote, 1 for upvote
 }
 
@@ -334,7 +334,8 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, vote.Author_ID+">"+vote.User_ID, vote.Author_ID, vote.User_ID, vote.Vote, vote.Vote)
+
+	res, err := stmt.ExecContext(ctx, vote.Author+">"+vote.TargetUser, vote.Author, vote.TargetUser, vote.Vote, vote.Vote)
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -359,7 +360,7 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err = stmt.ExecContext(ctx, vote.User_ID)
+	res, err = stmt.ExecContext(ctx, vote.TargetUser)
 
 	if err != nil {
 		log.Printf("Error %s when executing SP_SQL statement", err)
