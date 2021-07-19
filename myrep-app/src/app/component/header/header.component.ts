@@ -17,10 +17,15 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileDataService.currentUser.subscribe(
+    var userName = localStorage.getItem('username')
+    if (userName !== null) {
+      this.profileDataService.currentUser.next(userName)
+    } else {
+      this.profileDataService.currentUser.subscribe(
       res => {
         this.userPage = "/users/" + res
       }
     )
+    }
   }
 }
