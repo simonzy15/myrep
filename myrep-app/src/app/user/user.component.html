@@ -7,8 +7,14 @@
         <img [src]="profileData.picture">
         <div>{{ profileData.username }}</div>
         <div>    
-            <i [ngClass]="defaultVote == 1 ? 'fas fa-thumbs-up fa-2x highlight': 'fas fa-thumbs-up fa-2x'"></i>{{ profileData.upvotes }}
-            <i [ngClass]="defaultVote == 0 ? 'fas fa-thumbs-down fa-2x highlight': 'fas fa-thumbs-down fa-2x'"></i>{{ profileData.downvotes }}
+            <i [ngClass]="defaultVote == 1 ? 'fas fa-thumbs-up fa-2x highlight': 'fas fa-thumbs-up fa-2x'"
+            onMouseOver="this.style.cursor='pointer'"
+            (click)="upvote()"
+            ></i>{{ profileData.upvotes }}
+            <i [ngClass]="defaultVote == 0 ? 'fas fa-thumbs-down fa-2x highlight': 'fas fa-thumbs-down fa-2x'"
+            onMouseOver="this.style.cursor='pointer'"
+            (click)="downvote()"
+            ></i>{{ profileData.downvotes }}
         </div>
         <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
             <label>

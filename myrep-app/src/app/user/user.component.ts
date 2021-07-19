@@ -107,6 +107,30 @@ export class UserComponent implements OnInit {
     ).subscribe()
   }
 
+  public upvote(): void {
+    if (this.defaultVote != 1) {
+      this.adjustVote(this.defaultVote)
+      this.defaultVote = 1
+      this.profileData.upvotes = (parseInt(this.profileData.upvotes) + 1).toString()
+    }
+  }
+
+  public downvote(): void {
+    if (this.defaultVote != 0) {
+      this.adjustVote(this.defaultVote)
+      this.defaultVote = 0
+      this.profileData.downvotes = (parseInt(this.profileData.downvotes) + 1).toString()
+    }
+  }
+
+  public adjustVote(vote: number): void {
+    if (vote == 1) {
+      this.profileData.upvotes = (parseInt(this.profileData.upvotes) - 1).toString()
+    }
+    else if (vote == 0) {
+      this.profileData.downvotes = (parseInt(this.profileData.downvotes) - 1).toString()
+    }
+  }
   onSubmit(): void {
     const newComment = this.commentForm.value['comment']
     this.addComment(newComment)
