@@ -7,8 +7,8 @@
         <img [src]="profileData.picture">
         <div>{{ profileData.username }}</div>
         <div>    
-            <i class="fas fa-thumbs-up fa-2x"></i>{{ profileData.upvotes }}
-            <i class="fas fa-thumbs-down fa-2x"></i>{{ profileData.downvotes }}
+            <i *ngIf="defaultVote == 1" class="fas fa-thumbs-up fa-2x"></i>{{ profileData.upvotes }}
+            <i *ngIf="defaultVote == 0" class="fas fa-thumbs-down fa-2x"></i>{{ profileData.downvotes }}
         </div>
         <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
             <label>
