@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProfiledataService } from 'src/app/profiledata.service';
 
 
 @Component({
@@ -9,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   constructor(
+    public profileDataService: ProfiledataService
   ) {
   }
 
   ngOnInit(): void {
+    var userName = localStorage.getItem('username')
+    if (userName !== null) {
+      this.profileDataService.currentUser.next(userName)
+    }
   }
 }

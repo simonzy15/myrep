@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { ProfiledataService } from 'src/app/profiledata.service';
 
 @Component({
   selector: 'app-header',
@@ -9,12 +10,17 @@ import { AuthService } from '@auth0/auth0-angular';
 export class HeaderComponent implements OnInit {
   public userPage: string
   constructor(
-    public auth: AuthService
+    public auth: AuthService,
+    public profileDataService: ProfiledataService
   ) {
     
   }
 
   ngOnInit(): void {
-    this.userPage = "/users/" + localStorage.getItem('username')
+    this.profileDataService.currentUser.subscribe(
+      res => {
+        this.userPage = "/users/" + res
+      }
+    )
   }
 }
