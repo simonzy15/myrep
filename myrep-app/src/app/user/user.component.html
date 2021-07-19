@@ -1,10 +1,14 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+<style>
+    *{font-family: "Raleway", sans-serif}
+</style>
 <div *ngIf= "exists; then displayData"></div>
     <ng-template #displayData>
         <img [src]="profileData.picture">
         <div>{{ profileData.username }}</div>
         <div>    
-            {{ profileData.upvotes }}
-            {{ profileData.downvotes }}
+            <i class="fas fa-thumbs-up fa-2x"></i>{{ profileData.upvotes }}
+            <i class="fas fa-thumbs-down fa-2x"></i>{{ profileData.downvotes }}
         </div>
         <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
             <label>
