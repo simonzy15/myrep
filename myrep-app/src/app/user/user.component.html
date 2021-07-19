@@ -8,7 +8,7 @@
         <div>{{ profileData.username }}</div>
         <div>    
             <i [ngClass]="defaultVote == 1 ? 'fas fa-thumbs-up fa-2x highlight': 'fas fa-thumbs-up fa-2x'"></i>{{ profileData.upvotes }}
-            <i [ngClass]="defaultVote == 0 ? 'fas fa-thumbs-down fa-2x highlight': 'fas fa-thumbs-up fa-2x'" class="fas fa-thumbs-down fa-2x"></i>{{ profileData.downvotes }}
+            <i [ngClass]="defaultVote == 0 ? 'fas fa-thumbs-down fa-2x highlight': 'fas fa-thumbs-down fa-2x'"></i>{{ profileData.downvotes }}
         </div>
         <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
             <label>
