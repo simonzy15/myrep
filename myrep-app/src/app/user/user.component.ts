@@ -113,6 +113,17 @@ export class UserComponent implements OnInit {
       this.defaultVote = 1
       this.profileData.upvotes = (parseInt(this.profileData.upvotes) + 1).toString()
     }
+
+    var body = JSON.stringify({
+      'target': this.targetUser,
+      'author': this.userName,
+      'vote': 1
+    })
+
+    this.http.post(
+      this.path + '/api/addvote',
+      body
+    ).subscribe()
   }
 
   public downvote(): void {
@@ -121,6 +132,17 @@ export class UserComponent implements OnInit {
       this.defaultVote = 0
       this.profileData.downvotes = (parseInt(this.profileData.downvotes) + 1).toString()
     }
+
+    var body = JSON.stringify({
+      'target': this.targetUser,
+      'author': this.userName,
+      'vote': 0
+    })
+
+    this.http.post(
+      this.path + '/api/addvote',
+      body
+    ).subscribe()
   }
 
   public adjustVote(vote: number): void {
