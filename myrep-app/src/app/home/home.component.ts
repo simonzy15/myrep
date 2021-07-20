@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfiledataService } from 'src/app/profiledata.service';
+import { ProfiledataService } from '../profiledata.service';
 
 
 @Component({
@@ -8,9 +8,8 @@ import { ProfiledataService } from 'src/app/profiledata.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
   constructor(
-    public profileDataService: ProfiledataService
+    private profileDataService: ProfiledataService
   ) {
   }
 
