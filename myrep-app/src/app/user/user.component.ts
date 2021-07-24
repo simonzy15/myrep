@@ -48,6 +48,9 @@ export class UserComponent implements OnInit {
         else {
           this.exists = true;
           this.profileData = res
+          if (this.profileData.bio == '') {
+            this.profileData.bio = 'Bio is empty. Maybe I should write one!'
+          }
           this.initForm()
         }
       }
@@ -57,6 +60,7 @@ export class UserComponent implements OnInit {
     ).subscribe(
       res => {
         this.comments = res
+        this.comments.reverse()
       }
     )
 
@@ -101,7 +105,7 @@ export class UserComponent implements OnInit {
       'commenter': commenterUsername, // commenter
       'comment': comment
     })
-    this.comments.push({
+    this.comments.splice(0, 0, {
       target: this.targetUser,
       commenter: commenterUsername,
       comment: comment,

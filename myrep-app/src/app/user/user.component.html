@@ -2,37 +2,66 @@
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
-<div *ngIf= "exists; then displayData"></div>
-    <ng-template #displayData>
-        <img [src]="profileData.picture">
-        <div>{{ profileData.username }}</div>
-        <div>    
-            <i [ngClass]="defaultVote == 1 ? 'fas fa-thumbs-up fa-2x highlight': 'fas fa-thumbs-up fa-2x'"
-            onMouseOver="this.style.cursor='pointer'"
-            (click)="upvote()"
-            ></i>{{ profileData.upvotes }}
-            <i [ngClass]="defaultVote == 0 ? 'fas fa-thumbs-down fa-2x highlight': 'fas fa-thumbs-down fa-2x'"
-            onMouseOver="this.style.cursor='pointer'"
-            (click)="downvote()"
-            ></i>{{ profileData.downvotes }}
-        </div>
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-            <label>
-                Comment:
-                <input type = "text" formControlName="comment">
-            </label>
-            <button type="submit">Post</button>
-        </form>
+<div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
+    <div *ngIf= "exists; then displayData"></div>
+        <ng-template #displayData>
+            <div class = "card center">
+                <div class="container center textCenter">
+                    <img class="center" [src]="profileData.picture">
+                    <div>{{ profileData.username }}</div>
+                </div>
+                <div class="container center textCenter">    
+                    <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-down'"
+                    onMouseOver="this.style.cursor='pointer'"
+                    (click)="upvote()"
+                    ></i>{{ profileData.upvotes }}
+                    <i [ngClass]="defaultVote == 0 ? 'fas fa-chevron-down highlight': 'fas fa-chevron-down'"
+                    onMouseOver="this.style.cursor='pointer'"
+                    (click)="downvote()"
+                    ></i>{{ profileData.downvotes }}
+                </div>
+            </div>
 
-    <div><b>Comments</b></div>
-    <div *ngFor="let comment of comments">
-        Commenter: {{comment.commenter}} |
-        {{comment.time}} |
-        {{comment.comment}} |
-    </div>
-    </ng-template>
+            <div class = "card center" style="width: 20%;">
+                <div class="container center textCenter comment">
+                    <div>
+                        {{ profileData.bio }}
+                    </div>
+                </div>
+            </div>
 
-<div *ngIf= "showError; then error"></div>
-    <ng-template #error>
-        <div>User not found</div>
-    </ng-template>
+            <div class = "card center">
+                <form class="container center textCenter" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+                    <label>
+                        Comment
+                        <input type="text" formControlName="comment">
+                    </label>
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+
+            <div *ngFor="let comment of comments">
+                <div class="card center" style="width: 35%;">
+                    <div class="container center" fxLayout="column" fxLayoutAlign="space-between">
+                            <div fxLayoutAlign="start">
+                                {{comment.commenter}}
+                            </div>
+                            <div fxLayout="row" fxFlex="100%">
+                                <p class="comment">
+                                    {{comment.comment}}
+                                </p>
+                            </div>
+                            <div fxLayoutAlign="end">
+                                {{comment.time}}
+                            </div>
+                    </div>
+                </div>
+            </div>
+            </ng-template>
+
+    <div *ngIf= "showError; then error"></div>
+        <ng-template #error>
+            <div>User not found</div>
+        </ng-template>
+
+</div>
