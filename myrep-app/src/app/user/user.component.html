@@ -31,11 +31,16 @@
                     <button type="submit">Post</button>
                 </form>
             </div>
-            <div><b>Comments</b></div>
             <div *ngFor="let comment of comments">
-                Commenter: {{comment.commenter}} |
-                {{comment.time}} |
-                {{comment.comment}} |
+                <div class="card center comment">
+                    <div class="container center textCenter">
+                        Commenter: {{comment.commenter}} |
+                        {{comment.time}}
+                        <p>
+                            {{comment.comment}}
+                        </p>
+                    </div>
+                </div>
             </div>
             </ng-template>
 
