@@ -1,30 +1,35 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
 
-<div fxLayout="column" fxFlex="50%">
+<div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
     <div class="card center" *ngIf="auth.user$ | async as user" >
         <div class="container center">
-            <img [src]="user.picture">
+            <img class = "center" [src]="profileData.picture">
             <div>{{ user.preferred_username }}</div>
             <div>{{ user.email }}</div>
         </div>
-    </div>
-</div>
-
-<div fxLayout="column" fxFlex="50%" fxLayoutAlign="end">
-    <div>
-        <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-            <label>
-                Bio:
-                <input type = "text" formControlName="bio">
-            </label>
-            <button type="submit">Save</button>
-        </form>
+        <div class="container center" *ngIf= "profileData">
+            <div class="textCenter">
+                <i class="fas fa-chevron-up"></i>
+                {{ profileData.upvotes }}
+                <i class="fas fa-chevron-down"></i>
+                {{ profileData.downvotes }}
+            </div>
+        </div>
     </div>
 
-    <div *ngIf= "profileData">
-        {{ profileData.upvotes }}
-        {{ profileData.downvotes }}
+
+    <div class="card center">
+        <div class="container center">
+            <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <label>
+                    Bio:
+                    <input type = "text" formControlName="bio">
+                </label>
+                <button type="submit">Save</button>
+            </form>
+        </div>
     </div>
 </div>
