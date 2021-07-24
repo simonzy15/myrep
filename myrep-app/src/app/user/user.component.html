@@ -26,7 +26,9 @@
 
     <div><b>Comments</b></div>
     <div *ngFor="let comment of comments">
-        {{comment.comment}}
+        Commenter: {{comment.commenter}} |
+        {{comment.time}} |
+        {{comment.comment}} |
     </div>
     </ng-template>
 
