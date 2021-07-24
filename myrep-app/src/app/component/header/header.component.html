@@ -8,7 +8,7 @@
     <nav>
         <div *ngIf = "(auth.isAuthenticated$ | async) === false; then internal else external"></div>
         <ng-template #internal>
-            <app-login class = "button"></app-login>
+            <app-login></app-login>
         </ng-template>
         <ng-template #external>
             <button class = "button" [routerLink] = "userPage">
@@ -17,7 +17,7 @@
             <button class = "button" routerLink = "/profile">
                 Profile
             </button>
-            <button  class = "button"><app-logout></app-logout></button>
+            <app-logout></app-logout>
         </ng-template>
     </nav>
 </header>
