@@ -37,15 +37,16 @@ type userUpdate struct {
 }
 
 type userVote struct {
-	TargetUser   string `json:"target"`
-	Author string `json:"author"`
-	Vote      int    `json:"vote"` // 0 for downvote, 1 for upvote
+	TargetUser string `json:"target"`
+	Author     string `json:"author"`
+	Vote       int    `json:"vote"` // 0 for downvote, 1 for upvote
 }
 
 type commentData struct {
 	TargetUser string `json:"target"`
 	Commenter  string `json:"commenter"`
 	Comment    string `json:"comment"`
+	Picture    string `json:"picture"`
 	Time       string `json:"time"`
 }
 
@@ -211,7 +212,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertQuery := "INSERT INTO COMMENTS( USER_NAME, COMMENTER, COMMENT, COMMENT_TIME) VALUES (?, ?, ?, ?)"
+	insertQuery := "INSERT INTO COMMENTS( USER_NAME, COMMENTER, COMMENT, COMMENTER_PICTURE, COMMENT_TIME) VALUES (?, ?, ?, ?, ?)"
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -226,7 +227,7 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 
 	defer stmt.Close()
 
-	res, err := stmt.ExecContext(ctx, comment.TargetUser, comment.Commenter, comment.Comment, time.Now())
+	res, err := stmt.ExecContext(ctx, comment.TargetUser, comment.Commenter, comment.Comment, comment.Picture, time.Now())
 
 	if err != nil {
 		log.Printf("Error %s when executing SQL statement", err)
@@ -251,7 +252,7 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	commentInfo, err := DB.Query("select USER_NAME, COMMENTER, COMMENT, COMMENT_TIME from COMMENTS where USER_NAME = ?", params["target"])
+	commentInfo, err := DB.Query("select USER_NAME, COMMENTER, COMMENT, COMMENTER_PICTURE, COMMENT_TIME from COMMENTS where USER_NAME = ?", params["target"])
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -261,7 +262,7 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 	comments := make([]commentData, 0)
 
 	for commentInfo.Next() {
-		err := commentInfo.Scan(&comment.TargetUser, &comment.Commenter, &comment.Comment, &comment.Time)
+		err := commentInfo.Scan(&comment.TargetUser, &comment.Commenter, &comment.Comment, &comment.Picture, &comment.Time)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -333,7 +334,6 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer stmt.Close()
-
 
 	res, err := stmt.ExecContext(ctx, vote.Author+">"+vote.TargetUser, vote.Author, vote.TargetUser, vote.Vote, vote.Vote)
 
