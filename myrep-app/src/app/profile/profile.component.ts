@@ -43,6 +43,7 @@ export class ProfileComponent implements OnInit {
             }
             else {
               this.profileData = res
+              console.log(res)
             }
             this.profileDataService.currentUser.next(this.usernameStore)
             this.initForm();
