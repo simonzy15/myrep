@@ -32,13 +32,19 @@
                 </form>
             </div>
             <div *ngFor="let comment of comments">
-                <div class="card center comment">
-                    <div class="container center textCenter">
-                        Commenter: {{comment.commenter}} |
-                        {{comment.time}}
-                        <p>
-                            {{comment.comment}}
-                        </p>
+                <div class="card center" style="width: 35%;">
+                    <div class="container center" fxLayout="column" fxLayoutAlign="space-between">
+                            <div fxLayoutAlign="start">
+                                {{comment.commenter}}
+                            </div>
+                            <div fxLayout="row" fxFlex="100%">
+                                <p class="comment">
+                                    {{comment.comment}}
+                                </p>
+                            </div>
+                            <div fxLayoutAlign="end">
+                                {{comment.time}}
+                            </div>
                     </div>
                 </div>
             </div>
