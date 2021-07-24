@@ -34,7 +34,7 @@
                 <form class="container center textCenter" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
                     <label>
                         Comment
-                        <input type="text" formControlName="comment">
+                        <textarea rows="3" cols="25" type="text" formControlName="comment"></textarea>
                     </label>
                     <button type="submit">Post</button>
                 </form>
@@ -42,7 +42,7 @@
 
             <div *ngFor="let comment of comments">
                 <div class="card center" style="width: 35%;">
-                    <div class="container center" >
+                    <div class="container center">
                         <div fxLayout="row" fxFlex="20%" fxLayoutAlign="start">
                             <img class="picture" [src]="comment.picture">
                         </div>

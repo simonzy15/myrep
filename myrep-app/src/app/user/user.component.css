@@ -31,15 +31,6 @@ img {
     text-align: center;
 }
 
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
 button[type=submit] {
     width: 30%;
     background-color: #4CAF50;
@@ -57,11 +48,22 @@ button[type=submit]:hover {
     color: rgb(0, 110, 255)
 }
 .picture {
-    width: 120px;
-    height: 120px;
+    width: 6vw;
+    height: 12vh;
 }
 .comment {
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
+}
+
+textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    margin-top: 8px;
 }
