@@ -42,18 +42,25 @@
 
             <div *ngFor="let comment of comments">
                 <div class="card center" style="width: 35%;">
-                    <div class="container center" fxLayout="column" fxLayoutAlign="space-between">
-                            <div fxLayoutAlign="start">
-                                {{comment.commenter}}
-                            </div>
-                            <div fxLayout="row" fxFlex="100%">
-                                <p class="comment">
-                                    {{comment.comment}}
-                                </p>
-                            </div>
-                            <div fxLayoutAlign="end">
-                                {{comment.time}}
-                            </div>
+                    <div class="container center" >
+                        <div fxLayout="row" fxFlex="20%" fxLayoutAlign="start">
+                            <img class="picture" [src]="comment.picture">
+                        </div>
+                        <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start">
+                            <div fxLayout="column" fxLayoutAlign="space-between">
+                                <div fxLayoutAlign="start">
+                                    {{comment.commenter}}
+                                </div>
+                                <div fxLayoutAlign="start">
+                                    <p class="comment">
+                                        {{comment.comment}}
+                                    </p>
+                                </div>
+                                <div fxLayoutAlign="end">
+                                    {{comment.time}}
+                                </div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>

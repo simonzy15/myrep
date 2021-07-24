@@ -43,6 +43,7 @@ export class ProfileComponent implements OnInit {
             }
             else {
               this.profileData = res
+              localStorage.setItem('picture', this.profileData.picture)
               console.log(res)
             }
             this.profileDataService.currentUser.next(this.usernameStore)
@@ -63,6 +64,7 @@ export class ProfileComponent implements OnInit {
     const data = JSON.parse(this.profileJson);
     this.usernameStore = data["preferred_username"]
     localStorage.setItem('username', data["preferred_username"]);
+    localStorage.setItem('picture', data["picture"])
   }
 
   onSubmit(): void {
