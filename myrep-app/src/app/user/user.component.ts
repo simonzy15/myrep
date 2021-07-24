@@ -7,7 +7,7 @@ import { environment as env } from '../../environments/environment';
 
 export interface Comment {
   target: string;
-  commenter: string;
+  commenter: string | null;
   comment: string;
   time: string;
 }
@@ -95,10 +95,17 @@ export class UserComponent implements OnInit {
     )
   }
   public addComment(comment: string): void {
+    var commenterUsername = localStorage.getItem('username')
     var body = JSON.stringify({
       'target': this.targetUser, // user page
-      'commenter': localStorage.getItem('username'), // commenter
+      'commenter': commenterUsername, // commenter
       'comment': comment
+    })
+    this.comments.push({
+      target: this.targetUser,
+      commenter: commenterUsername,
+      comment: comment,
+      time: "Just Now"
     })
     console.log(body)
     this.http.post<any>(
