@@ -35,8 +35,8 @@ export class ProfileComponent implements OnInit {
                 id: 'NA',
                 username: this.usernameStore,
                 bio: '',
-                upvotes: '',
-                downvotes: '',
+                upvotes: '0',
+                downvotes: '0',
                 picture: data["picture"]
               }
 
