@@ -57,6 +57,7 @@ export class UserComponent implements OnInit {
     ).subscribe(
       res => {
         this.comments = res
+        this.comments.reverse()
       }
     )
 
@@ -101,7 +102,7 @@ export class UserComponent implements OnInit {
       'commenter': commenterUsername, // commenter
       'comment': comment
     })
-    this.comments.push({
+    this.comments.splice(0, 0, {
       target: this.targetUser,
       commenter: commenterUsername,
       comment: comment,
