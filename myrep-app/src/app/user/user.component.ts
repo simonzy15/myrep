@@ -48,6 +48,9 @@ export class UserComponent implements OnInit {
         else {
           this.exists = true;
           this.profileData = res
+          if (this.profileData.bio == '') {
+            this.profileData.bio = 'Bio is empty. Maybe I should write one!'
+          }
           this.initForm()
         }
       }
