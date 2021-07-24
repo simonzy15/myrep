@@ -22,6 +22,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserComponent } from './user/user.component';
 import { ProfiledataService } from './profiledata.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ProfiledataService } from './profiledata.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    FlexLayoutModule,
 
     AuthModule.forRoot({
       ... env.auth,
