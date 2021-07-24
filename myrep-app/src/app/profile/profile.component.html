@@ -24,7 +24,7 @@
             <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
                 <label>
                     <div class="textCenter">Bio</div>
-                    <input type="text" formControlName="bio">
+                    <textarea rows="5" cols="60" type="text" formControlName="bio"></textarea>
                 </label>
                 <div class="textCenter">
                     <button type="submit">Save</button>
