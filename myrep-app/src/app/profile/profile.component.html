@@ -2,22 +2,29 @@
     *{font-family: "Raleway", sans-serif}
 </style>
 
-<div *ngIf="auth.user$ | async as user">
-    <img [src]="user.picture" >
-    <div>{{ user.preferred_username }}</div>
-    <div>{{ user.email }}</div>
-</div>
-<div>
-    <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-        <label>
-            Bio:
-            <input type = "text" formControlName="bio">
-        </label>
-        <button type="submit">Save</button>
-    </form>
+<div fxLayout="column" fxFlex="50%">
+    <div class="card center" *ngIf="auth.user$ | async as user" >
+        <div class="container center">
+            <img [src]="user.picture">
+            <div>{{ user.preferred_username }}</div>
+            <div>{{ user.email }}</div>
+        </div>
+    </div>
 </div>
 
-<div *ngIf= "profileData">
-    {{ profileData.upvotes }}
-    {{ profileData.downvotes }}
+<div fxLayout="column" fxFlex="50%" fxLayoutAlign="end">
+    <div>
+        <form *ngIf="profileData" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <label>
+                Bio:
+                <input type = "text" formControlName="bio">
+            </label>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <div *ngIf= "profileData">
+        {{ profileData.upvotes }}
+        {{ profileData.downvotes }}
+    </div>
 </div>
