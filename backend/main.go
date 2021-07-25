@@ -382,6 +382,7 @@ func changePicture(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT")
 
 	decoder := json.NewDecoder(r.Body)
 
@@ -463,7 +464,7 @@ func main() {
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
 	router.HandleFunc("/api/getvote", getVote).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
-	router.HandleFunc("/api/updatephoto", changePicture).Methods("PUT")
+	router.HandleFunc("/api/updatephoto", changePicture).Methods("PUT", "OPTIONS")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
