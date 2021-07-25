@@ -8,7 +8,11 @@
             <div class = "card center">
                 <div class="container center textCenter">
                     <img class="center" [src]="profileData.picture">
-                    <div>{{ profileData.username }}</div>
+                    <div>
+                        <b>
+                            {{ profileData.username }}
+                        </b>
+                    </div>
                 </div>
                 <div class="container center textCenter">    
                     <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-up'"
