@@ -168,6 +168,13 @@ export class UserComponent implements OnInit {
       this.profileData.downvotes = (parseInt(this.profileData.downvotes) - 1).toString()
     }
   }
+
+  public toProfile(commenter: string | null): void {
+    this.router.navigateByUrl('/users/'+commenter).then(() => {
+      window.location.reload()
+    })
+  }
+
   onSubmit(): void {
     const newComment = this.commentForm.value['comment']
     this.addComment(newComment)
