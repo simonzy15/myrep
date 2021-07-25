@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ProfileData, ProfiledataService } from '../profiledata.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { DialogComponent } from '../component/dialog/dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +19,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public auth: AuthService,
-    public profileDataService: ProfiledataService
+    public profileDataService: ProfiledataService,
+    public dialog: MatDialog
   ) {
   }
 
@@ -43,7 +46,7 @@ export class ProfileComponent implements OnInit {
             }
             else {
               this.profileData = res
-              console.log(res)
+              localStorage.setItem('picture', this.profileData.picture)
             }
             this.profileDataService.currentUser.next(this.usernameStore)
             this.initForm();
@@ -59,10 +62,15 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  public openDialog() {
+    this.dialog.open(DialogComponent);
+  }
+
   public setLocalStorage(): void {
     const data = JSON.parse(this.profileJson);
     this.usernameStore = data["preferred_username"]
     localStorage.setItem('username', data["preferred_username"]);
+    localStorage.setItem('picture', data["picture"])
   }
 
   onSubmit(): void {

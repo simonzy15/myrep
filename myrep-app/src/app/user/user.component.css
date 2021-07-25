@@ -14,13 +14,6 @@
     padding: 16px 16px;
 }
 
-/* Add rounded corners to the top left and the top right corner of the image */
-img {
-    height: 320px;
-    width: 320px;
-    margin-bottom: 5%;
-}
-
 .center {
     display: block;
     margin-left: auto;
@@ -29,15 +22,6 @@ img {
 
 .textCenter {
     text-align: center;
-}
-
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
 }
 
 button[type=submit] {
@@ -56,19 +40,30 @@ button[type=submit]:hover {
 .highlight {
     color: rgb(0, 110, 255)
 }
+.picture {
+    width: 6vw;
+    height: 12vh;
+}
 .comment {
     overflow-wrap: break-word;
     word-wrap: break-word;
-  
-    -ms-word-break: break-all;
-    /* This is the dangerous one in WebKit, as it breaks things wherever */
-    word-break: break-all;
-    /* Instead use this non-standard one: */
     word-break: break-word;
-  
-    /* Adds a hyphen where the word breaks, if supported (No Blink) */
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
+}
+
+textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    margin-top: 8px;
+}
+
+/* Add rounded corners to the top left and the top right corner of the image */
+img {
+    height: 320px;
+    width: 320px;
+    margin-bottom: 5%;
 }
