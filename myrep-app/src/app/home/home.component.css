@@ -20,6 +20,10 @@
     padding: 16px 16px;
 }
 
+.container2 {
+    padding: 16px 1px;
+}
+
 .center {
     display: block;
     margin-left: auto;
