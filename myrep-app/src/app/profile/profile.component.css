@@ -1,7 +1,15 @@
+.background {
+    background-image: url('https://images.pexels.com/photos/305821/pexels-photo-305821.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .card {
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     margin-bottom: 1%;
+    margin-top: 1%;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -15,8 +23,8 @@
 }
 
 img {
-    height: 320px;
-    width: 320px;
+    height: 300px;
+    width: 300px;
     margin-bottom: 5%;
 }
 
@@ -33,8 +41,8 @@ img {
 .overlay {
     position: absolute;
     top: 0px;
-    height: 320px;
-    width: 320px;
+    height: 300px;
+    width: 300px;
     opacity: 0;
     transition: .3s ease;
     background-color: grey;
