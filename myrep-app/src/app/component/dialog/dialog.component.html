@@ -1,10 +1,15 @@
-<h2 mat-dialog-title>Install Angular</h2>
-<mat-dialog-content>
-  <h3>Develop across all platforms</h3>
-  <p>Learn one way to build applications with Angular and reuse your code and abilities to build
-    apps for any deployment target. For web, mobile web, native mobile and native desktop.</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
-</mat-dialog-actions>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+<style>
+    *{font-family: "Raleway", sans-serif}
+</style>
+<div mat-dialog-content>
+    <p>Paste your profile picture URL below</p>
+    <mat-form-field style="width: 400px;" appearance="fill">
+        <mat-label>Image Address</mat-label>
+        <input matInput>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</div>
