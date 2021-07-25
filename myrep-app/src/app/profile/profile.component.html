@@ -1,17 +1,17 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+<link href="https://unpkg.com/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet">
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
-
 <div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
     <div class="card center" *ngIf="auth.user$ | async as user" >
         <div class="container center textCenter">
             <div class="edit">
                 <img *ngIf="profileData" class="center" [src]="profileData.picture">
                 <div class="overlay">
-                    <a href="#" class="icon" title="Edit Picture">
+                    <div class="icon" (click)="openDialog()" title="Edit Picture" onMouseOver="this.style.cursor='pointer'">
                         <i class="fa fa-edit"></i>
-                      </a>
+                    </div>
                 </div>
             </div>
             <div>
