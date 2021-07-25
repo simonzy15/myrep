@@ -6,10 +6,10 @@
     <p>Paste your profile picture URL below</p>
     <mat-form-field style="width: 400px;" appearance="fill">
         <mat-label>Image Address</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="data.picture">
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="data.picture" cdkFocusInitial>Save</button>
 </div>
