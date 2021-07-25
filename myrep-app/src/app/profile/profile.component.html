@@ -6,7 +6,14 @@
 <div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
     <div class="card center" *ngIf="auth.user$ | async as user" >
         <div class="container center textCenter">
-            <img *ngIf="profileData" class="center" [src]="profileData.picture">
+            <div class="edit">
+                <img *ngIf="profileData" class="center" [src]="profileData.picture">
+                <div class="overlay">
+                    <a href="#" class="icon" title="Edit Picture">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                </div>
+            </div>
             <div>
                 <b>{{ user.preferred_username }}
                 </b>
