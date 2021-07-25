@@ -377,6 +377,37 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+func search(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+
+	var username string
+
+	results := make([]string, 0)
+
+	searchparams := params["searchparam"]
+
+	searchResults, err := DB.Query("SELECT USER_NAME FROM USERS WHERE USER_NAME LIKE ? LIMIT 10", "%"+searchparams+"%")
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	defer searchResults.Close()
+
+	for searchResults.Next() {
+		err := searchResults.Scan(&username)
+		if err != nil {
+			log.Fatal(err)
+		}
+		results = append(results, username)
+	}
+	json.NewEncoder(w).Encode(results)
+}
 
 func changePicture(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -465,7 +496,7 @@ func main() {
 	router.HandleFunc("/api/getvote", getVote).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/api/updatephoto", changePicture).Methods("PUT", "OPTIONS")
-
+	router.HandleFunc("/api/search/{searchparam}", search).Methods("GET")
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
 	// defer db.Close()

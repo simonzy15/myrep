@@ -2,6 +2,7 @@
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
+<div class="background">
 <div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
     <div *ngIf= "exists; then displayData"></div>
         <ng-template #displayData>
@@ -9,8 +10,8 @@
                 <div class="container center textCenter">
                     <img class="center" [src]="profileData.picture">
                     <div>
-                        <b>
-                            {{ profileData.username }}
+                        <i class="far fa-user"></i>
+                        <b>    {{ profileData.username }}
                         </b>
                     </div>
                 </div>
@@ -77,4 +78,5 @@
             <div>User not found</div>
         </ng-template>
 
+</div>
 </div>
