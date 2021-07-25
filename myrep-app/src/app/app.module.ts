@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { MatFormFieldModule }  from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from "@angular/material/dialog";
 
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserComponent } from './user/user.component';
 import { ProfiledataService } from './profiledata.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogComponent } from './component/dialog/dialog.component'
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     LoginComponent,
     LogoutComponent,
     ProfileComponent,
-    UserComponent
+    UserComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,11 +50,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatInputModule,
     MatButtonModule,
     FlexLayoutModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
 
     AuthModule.forRoot({
       ... env.auth,
     })
 
+  ],
+  entryComponents: [
+    DialogComponent
   ],
   providers: [
     ProfiledataService

@@ -14,7 +14,6 @@
     padding: 16px 16px;
 }
 
-/* Add rounded corners to the top left and the top right corner of the image */
 img {
     height: 320px;
     width: 320px;
@@ -30,13 +29,34 @@ img {
 .textCenter {
     text-align: center;
 }
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+
+.overlay {
+    position: absolute;
+    top: 0px;
+    height: 320px;
+    width: 320px;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: grey;
+}
+
+.icon {
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.edit {
+    position: relative
+}
+
+.edit:hover .overlay {
+    opacity: 0.4;
 }
 
 button[type=submit] {
@@ -53,6 +73,12 @@ button[type=submit]:hover {
 }
 
 textarea{
-  resize: none;
-  margin-top: 8px;
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    margin-top: 8px;
 }
