@@ -11,7 +11,7 @@
                     <div>{{ profileData.username }}</div>
                 </div>
                 <div class="container center textCenter">    
-                    <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-down'"
+                    <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-up'"
                     onMouseOver="this.style.cursor='pointer'"
                     (click)="upvote()"
                     ></i>{{ profileData.upvotes }}
