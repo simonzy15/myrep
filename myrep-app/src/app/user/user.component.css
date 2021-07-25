@@ -1,7 +1,13 @@
+.background {
+    background-color: #f7f7f7;
+}
+
 .card {
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     margin-bottom: 1%;
+    margin-top: 1%;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -63,7 +69,7 @@ textarea{
 
 /* Add rounded corners to the top left and the top right corner of the image */
 img {
-    height: 320px;
-    width: 320px;
+    height: 300px;
+    width: 300px;
     margin-bottom: 5%;
 }
