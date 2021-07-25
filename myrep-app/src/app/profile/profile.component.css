@@ -33,7 +33,7 @@ img {
 
 .overlay {
     position: absolute;
-    top: 207px;
+    top: 0px;
     height: 320px;
     width: 320px;
     opacity: 0;
@@ -50,6 +50,10 @@ img {
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;
+}
+
+.edit {
+    position: relative
 }
 
 .edit:hover .overlay {
