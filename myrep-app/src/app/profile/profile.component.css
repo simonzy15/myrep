@@ -31,6 +31,31 @@ img {
     text-align: center;
 }
 
+.overlay {
+    position: absolute;
+    top: 207px;
+    height: 320px;
+    width: 320px;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: grey;
+}
+
+.icon {
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.edit:hover .overlay {
+    opacity: 0.4;
+}
+
 button[type=submit] {
     width: 30%;
     background-color: #4CAF50;
