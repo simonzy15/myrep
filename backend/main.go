@@ -50,6 +50,11 @@ type commentData struct {
 	Time       string `json:"time"`
 }
 
+type updatePicture struct {
+	Username string `json:"username"`
+	Picture  string `json:"picture"`
+}
+
 var DB *sql.DB
 var currentUser User
 var comment commentData
@@ -373,6 +378,53 @@ func addVote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func changePicture(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
+
+	decoder := json.NewDecoder(r.Body)
+
+	var picture updatePicture
+
+	err := decoder.Decode(&picture)
+
+	if err != nil {
+		log.Printf("Error %s when preparing DECODING statement", err)
+		return
+	}
+
+	updateQuery := "UPDATE USERS SET USER_PICTURE = (?) WHERE USER_NAME = (?)"
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelfunc()
+
+	stmt, err := DB.PrepareContext(ctx, updateQuery)
+
+	if err != nil {
+		log.Printf("Error %s when preparing SQL statement", err)
+		return
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.ExecContext(ctx, picture.Picture, picture.Username)
+
+	if err != nil {
+		log.Printf("Error %s when executing SQL statement", err)
+		return
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error %s when finding rows affected", err)
+		return
+	}
+	log.Printf("%d products edited ", rows)
+
+}
+
 func main() {
 
 	err := godotenv.Load()
@@ -411,6 +463,7 @@ func main() {
 	router.HandleFunc("/api/getuser/{username}", getUser).Methods("GET")
 	router.HandleFunc("/api/getvote", getVote).Methods("GET")
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
+	router.HandleFunc("/api/updatephoto", changePicture).Methods("PUT")
 
 	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
 
