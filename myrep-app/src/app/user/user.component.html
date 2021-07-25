@@ -44,12 +44,14 @@
                 <div class="card center" style="width: 35%;">
                     <div class="container center">
                         <div fxLayout="row" fxFlex="20%" fxLayoutAlign="start">
-                            <img class="picture" [src]="comment.picture">
+                            <img class="picture" [src]="comment.picture" onMouseOver="this.style.cursor='pointer'" (click)="toProfile(comment.commenter)">
                         </div>
                         <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start">
                             <div fxLayout="column" fxFlex="100%" fxLayoutAlign="space-between">
-                                <div fxLayoutAlign="start">
+                                <div fxLayoutAlign="start" onMouseOver="this.style.cursor='pointer'" (click)="toProfile(comment.commenter)">
+                                    <b>
                                     {{comment.commenter}}
+                                    </b>
                                 </div>
                                 <div fxLayoutAlign="start">
                                     <p class="comment">

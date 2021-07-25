@@ -14,13 +14,6 @@
     padding: 16px 16px;
 }
 
-/* Add rounded corners to the top left and the top right corner of the image */
-img {
-    height: 320px;
-    width: 320px;
-    margin-bottom: 5%;
-}
-
 .center {
     display: block;
     margin-left: auto;
@@ -66,4 +59,11 @@ textarea{
     box-sizing: border-box;
     resize: none;
     margin-top: 8px;
+}
+
+/* Add rounded corners to the top left and the top right corner of the image */
+img {
+    height: 320px;
+    width: 320px;
+    margin-bottom: 5%;
 }
