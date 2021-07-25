@@ -8,10 +8,14 @@
             <div class = "card center">
                 <div class="container center textCenter">
                     <img class="center" [src]="profileData.picture">
-                    <div>{{ profileData.username }}</div>
+                    <div>
+                        <b>
+                            {{ profileData.username }}
+                        </b>
+                    </div>
                 </div>
                 <div class="container center textCenter">    
-                    <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-down'"
+                    <i [ngClass]="defaultVote == 1 ? 'fas fa-chevron-up highlight': 'fas fa-chevron-up'"
                     onMouseOver="this.style.cursor='pointer'"
                     (click)="upvote()"
                     ></i>{{ profileData.upvotes }}
@@ -34,7 +38,7 @@
                 <form class="container center textCenter" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
                     <label>
                         Comment
-                        <input type="text" formControlName="comment">
+                        <textarea rows="3" cols="25" type="text" formControlName="comment"></textarea>
                     </label>
                     <button type="submit">Post</button>
                 </form>
@@ -42,18 +46,27 @@
 
             <div *ngFor="let comment of comments">
                 <div class="card center" style="width: 35%;">
-                    <div class="container center" fxLayout="column" fxLayoutAlign="space-between">
-                            <div fxLayoutAlign="start">
-                                {{comment.commenter}}
-                            </div>
-                            <div fxLayout="row" fxFlex="100%">
-                                <p class="comment">
-                                    {{comment.comment}}
-                                </p>
-                            </div>
-                            <div fxLayoutAlign="end">
-                                {{comment.time}}
-                            </div>
+                    <div class="container center">
+                        <div fxLayout="row" fxFlex="20%" fxLayoutAlign="start">
+                            <img class="picture" [src]="comment.picture" onMouseOver="this.style.cursor='pointer'" (click)="toProfile(comment.commenter)">
+                        </div>
+                        <div fxLayout="row" fxFlex="80%" fxLayoutAlign="start">
+                            <div fxLayout="column" fxFlex="100%" fxLayoutAlign="space-between">
+                                <div fxLayoutAlign="start" onMouseOver="this.style.cursor='pointer'" (click)="toProfile(comment.commenter)">
+                                    <b>
+                                    {{comment.commenter}}
+                                    </b>
+                                </div>
+                                <div fxLayoutAlign="start">
+                                    <p class="comment">
+                                        {{comment.comment}}
+                                    </p>
+                                </div>
+                                <div fxLayoutAlign="end">
+                                    {{comment.time}}
+                                </div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>

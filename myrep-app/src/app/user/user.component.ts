@@ -9,6 +9,7 @@ export interface Comment {
   target: string;
   commenter: string | null;
   comment: string;
+  picture: string | null;
   time: string;
 }
 
@@ -100,15 +101,18 @@ export class UserComponent implements OnInit {
   }
   public addComment(comment: string): void {
     var commenterUsername = localStorage.getItem('username')
+    var commenterPicture = localStorage.getItem('picture')
     var body = JSON.stringify({
       'target': this.targetUser, // user page
       'commenter': commenterUsername, // commenter
-      'comment': comment
+      'comment': comment,
+      'picture': commenterPicture
     })
     this.comments.splice(0, 0, {
       target: this.targetUser,
       commenter: commenterUsername,
       comment: comment,
+      picture: commenterPicture,
       time: "Just Now"
     })
     console.log(body)
@@ -164,6 +168,13 @@ export class UserComponent implements OnInit {
       this.profileData.downvotes = (parseInt(this.profileData.downvotes) - 1).toString()
     }
   }
+
+  public toProfile(commenter: string | null): void {
+    this.router.navigateByUrl('/users/'+commenter).then(() => {
+      window.location.reload()
+    })
+  }
+
   onSubmit(): void {
     const newComment = this.commentForm.value['comment']
     this.addComment(newComment)
