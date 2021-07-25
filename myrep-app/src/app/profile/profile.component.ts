@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ProfileData, ProfiledataService } from '../profiledata.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { DialogComponent } from '../component/dialog/dialog.component';
+
+export interface EditPicture {
+  picture: string;
+}
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +19,7 @@ export class ProfileComponent implements OnInit {
   public profileJson: string = '';
   public usernameStore: string;
   public profileData: ProfileData;
+  public changePicture: string; 
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +68,14 @@ export class ProfileComponent implements OnInit {
   }
 
   public openDialog() {
-    this.dialog.open(DialogComponent);
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        picture: this.changePicture
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.changePicture = result;
+    });
   }
 
   public setLocalStorage(): void {
