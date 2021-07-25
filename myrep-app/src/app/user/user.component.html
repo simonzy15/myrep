@@ -2,6 +2,7 @@
 <style>
     *{font-family: "Raleway", sans-serif}
 </style>
+<div class="background">
 <div fxLayout="column" fxFlex="100%" fxLayoutAlign="center">
     <div *ngIf= "exists; then displayData"></div>
         <ng-template #displayData>
@@ -77,4 +78,5 @@
             <div>User not found</div>
         </ng-template>
 
+</div>
 </div>
