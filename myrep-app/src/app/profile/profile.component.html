@@ -16,10 +16,11 @@
                 </div>
             </div>
             <div>
-                <b>{{ user.preferred_username }}
+                <i class="far fa-user"></i>
+                <b>    {{ user.preferred_username }}
                 </b>
             </div>
-            <div>{{ user.email }}</div>
+            <div><i class="far fa-envelope"></i>    {{ user.email }}</div>
         </div>
         <div class="container center textCenter" *ngIf= "profileData">
             <i class="fas fa-chevron-up"></i>
