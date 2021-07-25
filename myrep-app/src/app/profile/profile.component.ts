@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
             else {
               this.profileData = res
               localStorage.setItem('picture', this.profileData.picture)
-              console.log(res)
             }
             this.profileDataService.currentUser.next(this.usernameStore)
             this.initForm();

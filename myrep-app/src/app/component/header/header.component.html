@@ -11,7 +11,7 @@
             <app-login></app-login>
         </ng-template>
         <ng-template #external>
-            <button class = "button" [routerLink] = "userPage">
+            <button class = "button" (click)="toProfile()">
                 Rep
             </button>
             <button class = "button" routerLink = "/profile">
