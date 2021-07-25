@@ -4,6 +4,8 @@ import { ProfileData, ProfiledataService } from '../profiledata.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 import { DialogComponent } from '../component/dialog/dialog.component';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from '../../environments/environment';
 
 export interface EditPicture {
   picture: string;
@@ -19,14 +21,17 @@ export class ProfileComponent implements OnInit {
   public profileJson: string = '';
   public usernameStore: string;
   public profileData: ProfileData;
-  public changePicture: string; 
+  public changePicture: string;
+  public path: string;
 
   constructor(
     private fb: FormBuilder,
+    private http: HttpClient,
     public auth: AuthService,
     public profileDataService: ProfiledataService,
     public dialog: MatDialog
   ) {
+    this.path = env.backendPath
   }
 
   ngOnInit(): void {
@@ -74,7 +79,18 @@ export class ProfileComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.changePicture = result;
+      if (result != undefined && result != ''){
+        this.changePicture = result
+        this.profileData.picture = this.changePicture
+        var body = JSON.stringify({
+          'username': this.profileData.username,
+          'picture': this.changePicture,
+        })
+        this.http.put(
+          this.path + '/api/updatephoto',
+          body
+        ).subscribe()
+      }
     });
   }
 
