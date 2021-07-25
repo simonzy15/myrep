@@ -21,4 +21,11 @@ export class LoginComponent implements OnInit {
       appState: { target: '/profile'}
     })
   }
+  public signup(): void {
+    this.auth.loginWithRedirect({
+      screen_hint: 'signup',
+      redirect_uri: window.location.origin,
+      appState: { target: '/profile'}
+    })
+  }
 }
