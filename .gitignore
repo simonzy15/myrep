@@ -16,6 +16,6 @@
 
 **/node_modules/
 
-./backend/localhost.csr
-./backend/localhost.crt
-./backend/localhost.key
+backend/localhost.csr
+backend/localhost.crt
+backend/localhost.key
