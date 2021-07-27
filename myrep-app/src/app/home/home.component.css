@@ -1,0 +1,55 @@
+.background {
+    background-image: url('https://images.pexels.com/photos/19670/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 2%;
+}
+
+.card {
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+    padding: 16px 16px;
+}
+
+.container2 {
+    padding: 16px;
+    padding-right: 5px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.tile {
+    width: 25%;
+}
+
+.replica {
+    width: 90%;
+}
+
+.examplePicture {
+    width: 100%;
+    height: 100%;
+}
+
+.examplePicture2 {
+    width: 120%;
+    height: 100%;
+}
