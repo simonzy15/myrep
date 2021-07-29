@@ -19,6 +19,6 @@ export class LogoutComponent implements OnInit {
 
   public logout(): void {
     localStorage.clear();
-    this.auth.logout({ returnTo: 'https://127.0.0.1:4200'})
+    this.auth.logout()
   }
 }
