@@ -497,7 +497,7 @@ func main() {
 	router.HandleFunc("/api/edituser/{username}", editUser).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/api/updatephoto", changePicture).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/api/search/{searchparam}", search).Methods("GET")
-	log.Fatal(http.ListenAndServeTLS(":8001", certPath, keyPath, router))
+	log.Fatal(http.ListenAndServeTLS(":443", certPath, keyPath, router))
 
 	// defer db.Close()
 }
