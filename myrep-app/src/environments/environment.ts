@@ -4,5 +4,5 @@ export const environment = {
     domain : 'dev-8z3b7ajm.us.auth0.com',
     clientId : 'zwhMLIbxzfTWildS0YG0iTGQXXTYEJxj'
   },
-  backendPath: 'https://myr3papi.link/'
+  backendPath: 'https://myr3papi.link'
 };
