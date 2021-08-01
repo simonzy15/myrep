@@ -19,4 +19,7 @@
 *.csr
 *.crt
 *.key
+
 *.env
+
+myrep-app/src/environments/environment.ts
