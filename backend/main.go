@@ -109,16 +109,8 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-<<<<<<< HEAD
 
 	userinfo, err := DB.Query("select USER_NAME, USER_ID, USER_BIO, USER_UPVOTES, USER_DOWNVOTES, USER_PICTURE from USERS where USER_NAME = ?", params["username"])
-=======
-	// json.NewEncoder(w).Encode(users)
-
-	fmt.Println(params["username"])
-
-	userinfo, err := DB.Query("select USER_NAME, USER_ID from USERS where USER_NAME = ?", params["username"])
->>>>>>> username
 	if err != nil {
 		// return
 		log.Fatal(err)
@@ -169,19 +161,7 @@ func editUser(w http.ResponseWriter, r *http.Request) {
 		count++
 	}
 
-<<<<<<< HEAD
 	editQuery += " WHERE USER_NAME = \"" + params["username"] + "\""
-=======
-	if editUser.Username != "" {
-		if count > 0 {
-			editQuery += ", "
-		}
-		editQuery += "USER_NAME = \"" + editUser.Username + "\""
-		count++
-	}
-
-	editQuery += " WHERE USER_NAME = " + params["username"]
->>>>>>> username
 
 	fmt.Println(editQuery)
 
